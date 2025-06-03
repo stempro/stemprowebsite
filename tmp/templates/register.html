@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StemPro Academy Registration</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/frmstyles.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-container">
+            <!-- Logo and heading in the same row -->
+            <div class="form-header">
+                <!-- Logo -->
+                <a href="https://www.stempro.org">
+                    <img src="https://www.stempro.org/static/images/3.png" alt="STEMPro Academy Logo">
+                </a>
+                <!-- Heading -->
+                <h2>Course Registration</h2>
+            </div>
+            <form method="POST" action="/register">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="first_name" name="first_name" placeholder="First Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Phone" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="zip_code" name="zip_code" placeholder="Zip Code" required>
+                </div>
+                <div class="dropdown-container">
+                    <select class="dropdown-select" id="course" name="course" required>
+                        <option value="" disabled selected>Select Course</option>
+                        <option value="Junior AI Program">Junior AI Program</option>
+                        <option value="Generative AI Program">Generative AI Program</option>
+                        <option value="Advanced Generative AI Program">Advanced Generative AI Program</option>
+                        <option value="Junior Researcher Program">Junior Researcher Program</option>
+                        <option value="Interview Clinic">Interview Clinic</option>
+                    </select>
+                </div>
+                <div class="dropdown-container">
+                    <select class="dropdown-select" id="student_type" name="student_type" required>
+                        <option value="" disabled selected>I am a...</option>
+                        <option value="HStudent">High School Student (Grade 9 to 12)</option>
+                        <option value="MStudent">Middle School Student (Grade 6 to 8)</option>
+                        <option value="CStudent">College Student</option>
+                        <option value="Parent">Parent of a Student</option>
+                        <option value="Career">Adult/Professional (Not a Student)</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="dropdown-container">
+                    <select class="dropdown-select" id="country" name="country" required>
+                        <option value="" disabled selected>Select Country</option>
+                        <option value="USA">USA</option>
+                        <option value="Canada">Canada</option>
+                        <option value="Other">Other Countries</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" id="comments" name="comments" rows="3" placeholder="Additional Comments (optional)"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Register</button>
+                <a href="{{ url_for('programs') }}" class="btn btn-cancel">Cancel</a>
+            </form>
+
+            <!-- Add hyperlink to footer -->
+            <div class="text-center" style="margin-top: 20px;">
+                <p>  <a href="https://www.stempro.org" target="_blank">Go Back to StemPro Academy</a></p>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login to StemPro Academy</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/frmstyles.css') }}">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        /* Center Aligning Form Container */
+        .form-container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Error Message Styling */
+        #email-error {
+            display: none;
+            background-color: #f7e55b;
+            color: #e84113;
+            padding: 10px;
+            margin: 10px auto;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 300px;
+        }
+
+        /* Password visibility icon */
+        .toggle-password {
+            cursor: pointer;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+
+        /* Reduced Width for Google Sign-In Button */
+        .g_id_signin {
+            max-width: 200px;
+            margin: 0 auto;
+        }
+
+        .form-header img {
+            width: 60px;
+            height: auto;
+        }
+
+        .action-buttons {
+            margin-top: 15px;
+        }
+
+        /* Center-aligning input fields */
+        .form-group input {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="form-container">
+        <div class="form-header">
+            <a href="https://www.stempro.org">
+                <img src="https://www.stempro.org/static/images/3.png" alt="STEMPro Academy Logo">
+            </a>
+        </div>
+        <div><h2>Log In </h2></div>
+        <p>Not Enrolled? <a href="{{ url_for('enroll') }}"> Enroll</a></p>
+        <p>Enter your email to log in.</p>
+
+        <!-- Login Form -->
+        <form action="/login" method="post" onsubmit="return validateLogin()">
+            <div class="form-group">
+                <input type="email" class="form-control" id="email" name="email" required onblur="validateEmail()" placeholder="Enter your email" value="{{ email or '' }}">
+
+                <div id="email-error" class="error-message"></div>
+            </div>
+
+            <!-- Password Field with Toggle Visibility Icon -->
+            <div id="password-section" class="form-group" style="position: relative;">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password">
+                <span id="toggle-password-icon" class="toggle-password" onclick="togglePasswordVisibility()">👁️</span>
+            </div>
+            <div>
+                {% if error %}
+                    <div id="login-error" class="error-message" style="display: block; color: red; margin-top: 10px;">
+                        {{ error }}
+                    </div>
+                {% else %}
+                    <div id="login-error" class="error-message" style="display: none;"></div>
+                {% endif %}
+            </div>
+            <div class="action-buttons">
+                <button type="submit" class="btn btn-primary" id="login-btn">Login</button>
+            </div>
+
+            <div id="forgot-password-section" class="forgot-password-section">
+                <span>Forgot Your Password? </span>
+                <a href="javascript:void(0);" onclick="requestPasswordReset()">Reset</a>
+            </div>
+        </form>
+
+        <!-- Social Login Buttons -->
+        <!-- <div class="social-buttons text-center mt-3">
+            <h3>Or log in with</h3>
+            <div id="g_id_onload"
+                 data-client_id="995572156701-s3nk4msorcl7n6hdr1p0sd6l2ijme5uj.apps.googleusercontent.com"
+                 data-context="signin"
+                 data-ux_mode="popup"
+                 data-login_uri="https://stempro.org/auth/callback"
+                 data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin"
+                 data-type="standard"
+                 data-shape="pill"
+                 data-theme="outline"
+                 data-text="sign_in_with"
+                 data-size="medium"
+                 data-logo_alignment="left">
+            </div> -->
+            <!-- <div>
+                <a href="/auth/facebook" class="social-btn facebook-btn">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook logo" class="social-icon"> Log in with Facebook
+                </a>
+                <a href="/auth/microsoft" class="social-btn microsoft-btn">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft logo" class="social-icon"> Log in with Microsoft
+                </a>
+            </div> -->
+        <!-- </div> -->
+
+        <div class="text-center" style="margin-top: 20px;">
+            <p><a href="https://www.stempro.org" target="_blank">Go Back to StemPro Academy</a></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function validateEmail() {
+        const emailInput = document.getElementById('email');
+        const emailError = document.getElementById('email-error');
+        const passwordSection = document.getElementById('password-section');
+        const loginBtn = document.getElementById('login-btn');
+        const forgotPasswordSection = document.getElementById('forgot-password-section');
+        const email = emailInput.value.trim();
+
+        emailError.style.display = 'none';
+        forgotPasswordSection.style.display = 'none';
+
+        const emailPattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
+        if (!emailPattern.test(email)) {
+            emailError.textContent = 'Please enter a valid email address.';
+            emailError.style.display = 'block';
+            return;
+        }
+
+        fetch('/check_email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Response data:', data);
+            if (data.email_taken) {
+                emailError.style.display = 'none';
+                passwordSection.style.display = 'block';
+                loginBtn.style.display = 'block';
+                forgotPasswordSection.style.display = 'block';
+            } else {
+                emailError.innerHTML = 'Email not registered. <a href="/enroll" class="enroll-link">Enroll here</a>';
+                emailError.style.display = 'block';
+            }
+        })
+        .catch(error => {
+            console.error('Error checking email availability:', error);
+        });
+    }
+
+    function validateLogin() {
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const loginError = document.getElementById('login-error');
+
+        if (email === '' || password === '') {
+            loginError.textContent = 'Please fill in both your email and password.';
+            loginError.style.display = 'block';
+            return false;
+        }
+
+        loginError.style.display = 'none';
+        return true;
+    }
+
+    function togglePasswordVisibility() {
+        const passwordField = document.getElementById('password');
+        const icon = document.getElementById('toggle-password-icon');
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            icon.textContent = '🙈';  // Change icon to "hide"
+        } else {
+            passwordField.type = 'password';
+            icon.textContent = '👁️';  // Change icon to "show"
+        }
+    }
+
+
+
+    function requestPasswordReset() {
+        const email = document.getElementById('email').value.trim();
+
+        fetch('/generate_code', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email: email })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                // Pass the email as a query parameter
+                window.location.href = '/reset_password?email=' + encodeURIComponent(email);
+            } else if (data.error) {
+                alert("Error: " + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Error requesting password reset code:', error);
+        });
+    }
+
+
+    // function requestPasswordReset() {
+    //     fetch('/generate_code', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify({ email: document.getElementById('email').value })
+    //     })
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         if (data.message) {
+    //             window.location.href = '/reset_password';
+    //         } else if (data.error) {
+    //             alert("Error: " + data.error);
+    //         }
+    //     })
+    //     .catch(error => {
+    //         console.error('Error requesting password reset code:', error);
+    //     });
+    // }
+
+    window.onload = function() {
+        const emailInput = document.getElementById('email');
+        emailInput.addEventListener('blur', validateEmail);
+    };
+</script>
+
+</body>
+</html>

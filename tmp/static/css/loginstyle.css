@@ -1,0 +1,144 @@
+/* Body styling */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f3f9fb;
+}
+
+/* Form Container */
+.form-container {
+    max-width: 700px; /* Larger for login */
+    margin: 50px auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Header */
+.form-header {
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-header h2 {
+    margin: 0;
+    font-size: 1.2rem; /* Aligned with mainstyle.css */
+}
+
+/* Content and Form Section */
+.content {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0;
+    border-bottom: 1px solid #d1e3eb;
+}
+
+.form-section {
+    width: 48%;
+}
+
+/* Section Title */
+.section-title {
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #333;
+    margin: 10px 0;
+}
+
+
+/* Form Control */
+.form-control {
+    width: 100%; /* Ensures the input or dropdown takes up the full width of the container */
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    font-size: 0.9rem; /* Increased font size slightly for readability, consistent with common form sizes */
+    box-sizing: border-box; /* Ensures padding and borders are included in the total width */
+
+    /* Custom dropdown arrow */
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDEwIDIwIj4KICAgIDxwb2x5Z29uIHBvaW50cz0iMCA1IDUgMTAgMTAgNSIgZmlsbD0iIzY2NiIgLz4KPC9zdmc+Cg==');
+    background-repeat: no-repeat;
+    background-position: right 10px center; /* Aligns arrow on the right side */
+    background-size: 12px; /* Adjusts the size of the arrow icon */
+
+    /* Removes the default dropdown arrow across browsers */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.form-control:focus {
+    border-color: #007bff; /* Highlight border color on focus */
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); /* Adds a subtle shadow on focus for better visibility */
+    outline: none; /* Removes default outline */
+}
+
+/* Primary Button */
+.btn-primary {
+    background-color: #76c043;
+    border: none;
+    color: white;
+    border-radius: 20px;
+    padding: 12px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 0.7rem;
+    box-sizing: border-box;
+}
+
+.btn-primary:hover {
+    background-color: #66ab37;
+}
+
+/* Reset Password Link */
+.reset-password {
+    display: block;
+    text-align: right;
+    margin-top: 5px;
+    color: #0073e6;
+    text-decoration: none;
+    font-size: 0.6rem;
+}
+
+.reset-password:hover {
+    text-decoration: underline;
+}
+
+/* Social Buttons */
+.social-buttons {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+}
+
+.social-btn {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    text-decoration: none;
+    color: #333;
+    font-size: 0.7rem;
+    width: 48%;
+    justify-content: center;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+}
+
+.social-btn img {
+    width: 20px;
+    margin-right: 8px;
+    max-width: 100%;
+}

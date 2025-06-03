@@ -1,0 +1,434 @@
+/* Basic styling */
+body, h1, h2, h3, p, ul, footer {
+    font-family: Arial, sans-serif;
+    color: #333;
+    line-height: 1.6;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background: #004080;
+    color: #fff;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+}
+
+header img {
+    height: 100px;
+    margin-right: 20px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+header p {
+    font-size: 0.7rem;
+}
+
+section {
+    padding: 5px;
+    margin: 5px 0;
+}
+
+/* Button styling */
+.button {
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.signup-button {
+    background-color: #004080;
+    color: #fff;
+}
+
+.schedule-button {
+    background-color: #98b336fa;
+    color: rgba(255, 255, 255, 0.998);
+}
+
+.signup-button:hover {
+    background-color: #b7cce1;
+}
+
+.schedule-button:hover {
+    background-color: #50ed7f;
+}
+
+footer {
+    background-color: #98b336fa;
+    color: #fff;  /*!important;*/
+    padding: 20px 0;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.footer-content {
+    /* max-width: 1200px; */
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5px;
+    align-items: center;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0;
+    display: flex;
+    gap: 20px;
+    justify-content: center; /* Center-aligns the links */
+}
+
+.footer-links li {
+    display: inline;
+}
+
+.footer-links a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #007bff;
+}
+/*
+.cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #e8f5c3;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    display: flex !important;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+    z-index: 1000;
+}
+
+
+.cookie-banner p {
+    margin: 0;
+    font-size: 0.7rem;
+}
+
+.cookie-banner button {
+    background-color: #66ab37;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cookie-banner button:hover {
+    background-color: #555943;
+}
+
+.cookie-banner button:nth-child(2) {
+    background-color: #66ab37;
+}
+
+.cookie-banner button:nth-child(2):hover {
+    background-color: #555943;
+} */
+
+.cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #e8f5c3;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+    z-index: 1000;
+}
+
+.cookie-banner p {
+    margin: 0;
+    font-size: 0.7rem;
+}
+
+.cookie-banner button {
+    background-color: #66ab37;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cookie-banner button:hover {
+    background-color: #555943;
+}
+
+.cookie-banner button:nth-child(2) {
+    background-color: #66ab37;
+}
+
+.cookie-banner button:nth-child(2):hover {
+    background-color: #555943;
+}
+.navbar {
+    position: relative; /* Set relative positioning for the header */
+    display: flex;
+    align-items: center;
+    background-color: #a4b93e;
+    padding: 10px 20px;
+}
+
+.auth-links {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 0.9rem;
+}
+
+.auth-links a {
+    color: #fafbf7;
+    text-decoration: none;
+    margin-left: 5px;
+}
+
+.auth-links a:hover {
+    text-decoration: underline;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 40px;
+    margin-right: 10px;
+}
+
+.logo-text {
+    font-size: 1.0rem;
+    color: #004080;
+    font-weight: bold;
+}
+/* Default desktop styles */
+.nav-menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    margin-left: 20px;
+}
+
+.nav-menu li {
+    margin-right: 20px;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: white;
+    font-size: 0.9rem;
+    font-family: 'Arial', sans-serif;
+}
+
+.nav-menu a:hover {
+    text-decoration: underline;
+}
+
+/* Hide hamburger icon by default */
+.hamburger {
+    display: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 10px; /* Increases the clickable area */
+    margin-left: 10px; /* Adds space between the logo and hamburger */
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    /* Display the hamburger icon */
+    .hamburger {
+        display: block;
+    }
+
+    /* Hide the nav menu by default on mobile */
+    .nav-menu {
+        display: none;
+        flex-direction: column; /* Stack items vertically */
+        width: 100%;
+        background-color: #004080; /* Background color for mobile menu */
+        position: absolute;
+        top: 60px; /* Adjust based on header height */
+        left: 0;
+        padding: 10px 0;
+        z-index: 1000;
+    }
+
+    .nav-menu li {
+        margin: 0;
+        padding: 10px 20px;
+        text-align: left;
+    }
+
+    .nav-menu a {
+        font-size: 1.0rem; /* Larger font for mobile menu */
+    }
+
+    /* Toggle the menu when active */
+    .nav-menu.active {
+        display: flex;
+    }
+    /* Center and make the "Schedule" button smaller for mobile */
+    .login-button {
+            padding: 5px 10px;
+            font-size: 0.9rem;
+    }
+}
+
+/* .nav-menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    margin-left: 20px;
+}
+
+.nav-menu li {
+    margin-right: 20px;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: white;
+    font-size: 0.9rem;
+    font-family: 'Arial', sans-serif;
+}
+
+.nav-menu a:hover {
+    text-decoration: underline;
+} */
+
+.login-button {
+    margin-left: auto;
+    padding: 10px 20px;
+    background-color: #fff;
+    color: #004080;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+}
+
+.login-button:hover {
+    background-color: #e0e0e0;
+}
+
+.tab-container {
+    max-width: 800px;
+    margin: 20px 0;
+}
+
+.tab-buttons {
+    display: flex;
+    justify-content: flex-start; /* Aligns buttons to the very left */
+    border-bottom: 2px solid #ddd; /* Underline the whole tab section */
+}
+
+.tab-button {
+    padding: 10px 15px;
+    font-weight: bold;
+    color: #333;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    transition: border-bottom 0.3s;
+    font-size: 1rem;
+}
+
+.tab-button:hover {
+    color: #007bff; /* Highlight color on hover */
+}
+
+.tab-button.active {
+    border-bottom: 3px solid #007bff; /* Underline the active tab */
+    font-weight: bold;
+    color: #007bff;
+}
+
+.tab-content {
+    display: none;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    margin-top: 10px;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.back-link {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.back-link a {
+    color: #004080;
+    font-size: 1rem;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.back-link a:hover {
+    text-decoration: underline;
+    color: #007bff;
+}
+
+/* Error  */
+.error-message {
+    display: none;
+    background-color: #f8d7da;
+    color: #f20a21;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+}
+.login-link {
+    margin-top: 10px;
+    text-align: center;
+    display: none; /* Hide by default */
+}
+
+.login-link a {
+    color: #007bff; /* Bootstrap primary color */
+    text-decoration: none;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}

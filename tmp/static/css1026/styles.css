@@ -1,0 +1,227 @@
+/* Basic styling */
+body, h1, h2, h3, p, ul, footer {
+    font-family: Arial, sans-serif;
+    color: #333;
+    line-height: 1.6;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background: #004080;
+    color: #fff;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+}
+
+header img {
+    height: 100px;
+    margin-right: 20px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+header p {
+    font-size: 0.7rem;
+}
+
+section {
+    padding: 5px;
+    margin: 5px 0;
+}
+
+/* Button styling */
+.button {
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.signup-button {
+    background-color: #004080;
+    color: #fff;
+}
+
+.schedule-button {
+    background-color: #98b336fa;
+    color: rgba(255, 255, 255, 0.998);
+}
+
+.signup-button:hover {
+    background-color: #b7cce1;
+}
+
+.schedule-button:hover {
+    background-color: #50ed7f;
+}
+
+footer {
+    background-color: #98b336fa;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 10px;
+    font-size: 1.0rem;
+    font-family: Arial, sans-serif;
+}
+
+.cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #e8f5c3;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+    z-index: 1000;
+}
+
+.cookie-banner p {
+    margin: 0;
+    font-size: 0.7rem;
+}
+
+.cookie-banner button {
+    background-color: #66ab37;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cookie-banner button:hover {
+    background-color: #555943;
+}
+
+.cookie-banner button:nth-child(2) {
+    background-color: #66ab37;
+}
+
+.cookie-banner button:nth-child(2):hover {
+    background-color: #555943;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    background-color: #a4b93e;
+    padding: 10px 20px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 40px;
+    margin-right: 10px;
+}
+
+.logo-text {
+    font-size: 1.0rem;
+    color: #004080;
+    font-weight: bold;
+}
+
+.nav-menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    margin-left: 20px;
+}
+
+.nav-menu li {
+    margin-right: 20px;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: white;
+    font-size: 0.9rem;
+    font-family: 'Arial', sans-serif;
+}
+
+.nav-menu a:hover {
+    text-decoration: underline;
+}
+
+.login-button {
+    margin-left: auto;
+    padding: 10px 20px;
+    background-color: #fff;
+    color: #004080;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+}
+
+.login-button:hover {
+    background-color: #e0e0e0;
+}
+
+.tab-container {
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+.tab-container {
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+.tab-buttons {
+    display: flex;
+    justify-content: space-around;
+    background-color: #004080;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 15px;
+    font-weight: bold;
+    color: white;
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+}
+
+.tab-button.active {
+    background-color: #98b336fa;
+    color: white;
+    border-bottom: 3px solid #fff;
+}
+
+.tab-content {
+    display: none;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    margin-top: 10px;
+}
+
+.tab-content.active {
+    display: block;
+}

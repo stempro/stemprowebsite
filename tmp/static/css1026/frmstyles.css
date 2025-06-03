@@ -1,0 +1,88 @@
+/* Form Container */
+.form-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Header */
+.form-header {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-header img {
+    width: 60px;
+    height: auto;
+    margin-right: 15px; /* Space between logo and heading */
+}
+
+.form-control {
+    width: 100%; /* Ensure full width */
+    padding: 10px 15px 10px 10px; /* Add extra padding on the right to avoid text cutoff */
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    font-size: 0.9rem; /* Adjusted for readability */
+    box-sizing: border-box;
+
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+
+    /* Remove default appearance */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    /* Text overflow settings */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Adds "..." if text is too long */
+    white-space: nowrap; /* Prevents text from wrapping */
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+    outline: none;
+}
+
+/* Primary Button */
+.btn-primary {
+    background-color: #76c043;
+    border: none;
+    color: white;
+    border-radius: 20px;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    text-align: center;
+    width: 100%;
+}
+
+.btn-primary:hover {
+    background-color: #66ab37;
+}
+
+/* Cancel Button */
+.btn-cancel {
+    background-color: #f3d022;
+    border: none;
+    color: white;
+    border-radius: 20px;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 0.7rem;
+    margin-top: 10px;
+}
+
+.btn-cancel:hover {
+    background-color: #e9dd9b;
+}

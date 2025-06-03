@@ -1,0 +1,99 @@
+<!-- about.html -->
+{% extends 'base.html' %}
+
+{% block title %}About Us - StemPro Academy{% endblock %}
+
+{% block content %}
+
+<section>
+    <h2>Project-Based AI Learning Courses</h2>
+    <p>StemPro Academy’s AI courses guide students from basics to advanced models, tackling real-world projects that ignite creativity and build essential skills.</p> <p>Projects like StockAI, AI for Goodness, Debate Me in GenAI, and Proof of Global Warming develop critical thinking and inspire innovation.</p> <p>Join us to turn curiosity into expertise!</p>
+
+    <section class="tab-container">
+        <!-- Tab Buttons -->
+        <div class="tab-buttons">
+            <button class="tab-button active" onclick="openTab(event, 'junior-ai')">Junior AI Program</button>
+            <button class="tab-button" onclick="openTab(event, 'generative-ai')">Generative AI Program</button>
+            <button class="tab-button" onclick="openTab(event, 'advanced-ai')">Advanced AI Program</button>
+        </div>
+
+        <!-- Tab Content: Junior AI Program -->
+        <div id="junior-ai" class="tab-content active">
+            <h3>🧑‍💻 AI and Programming In Action - Junior AI Program</h3>
+            <p><strong>For Middle & High School Students</strong></p>
+            <p>An interactive, hands-on program introducing students to <strong>Generative AI</strong> through engaging, real-world projects and practical lessons. This is the perfect launchpad for young innovators!</p>
+            <h4>Program Highlights</h4>
+            <ul>
+                <li><strong>Objective</strong>: Empower students to understand and create with AI, building real projects that boost confidence and creativity.</li>
+                <li><strong>Curriculum</strong>: Python basics, AI fundamentals, and popular AI libraries for accessible learning.</li>
+                <li><strong>Methodology</strong>: Real projects published online, developing real-world AI skills.</li>
+                <li><strong>Outcome</strong>: Personal AI project; creativity, critical thinking, and collaboration skills.</li>
+            </ul>
+            <p><strong>Duration</strong>: 6 weeks (12 lesson hours) | <strong>Class Size</strong>: Max 8 students | <strong>Next Session</strong>: Nov 2024</p>
+            <a href="{{ url_for('success') }}"  >Success Stories</a>
+            <br><br>
+            <div style="text-align: left;">
+                Join Us Today:   <a href="{{ url_for('register') }}" class="button signup-button" style="margin-right: 10px;">Sign Up</a>
+                Get Personalized Guidance: <a href="{{ url_for('schedule') }}" class="button schedule-button">Schedule</a>
+            </div>
+        </div>
+
+        <!-- Tab Content: Generative AI Program -->
+        <div id="generative-ai" class="tab-content">
+            <h3>🧑‍💻 AI and Programming In Action - Generative AI Program</h3>
+            <p><strong>Generative AI Education for Middle Graders</strong></p>
+            <p>This program empowers middle school students with a comprehensive understanding of Generative AI, guiding them to create innovative projects using advanced AI technologies.</p>
+            <h4>Program Highlights</h4>
+            <ul>
+                <li><strong>Objective</strong>: Empower students to understand Generative AI and create unique projects.</li>
+                <li><strong>Curriculum</strong>: Python, Generative AI, GPT models, Neural Networks (GANs, VAEs), NLP, AI tools (e.g., ChatGPT).</li>
+                <li><strong>Methodology</strong>: Project-based learning using Python, Transformers, GANs, TensorFlow, PyTorch.</li>
+                <li><strong>Outcome</strong>: Complete a Generative AI project; enhance creative and critical thinking skills.</li>
+            </ul>
+            <p><strong>Duration</strong>: 6 weeks (12 lesson hours) | <strong>Class Size</strong>: Max 5 students | <strong>Next Session</strong>: Nov 2024</p>
+            <a href="{{ url_for('success') }}"  >Success Stories</a>
+            <br><br>
+            <div style="text-align: left;">
+                Join Us Today:   <a href="{{ url_for('register') }}" class="button signup-button" style="margin-right: 10px;">Sign Up</a>
+                Get Personalized Guidance: <a href="{{ url_for('schedule') }}" class="button schedule-button">Schedule</a>
+            </div>
+        </div>
+
+        <!-- Tab Content: Advanced AI Program -->
+        <div id="advanced-ai" class="tab-content">
+            <h3>🧑‍💻 AI and Programming In Action - Advanced Generative AI Program</h3>
+            <p><strong>Advanced Generative AI Education for High School Students</strong></p>
+            <p>Designed for high school students ready to explore advanced Generative AI techniques, preparing them for AI research and development.</p>
+            <h4>Program Highlights</h4>
+            <ul>
+                <li><strong>Objective</strong>: Equip students with skills to design and implement advanced AI models, like building GPT from scratch.</li>
+                <li><strong>Curriculum</strong>: Advanced Python, Transformers, GANs, VAEs, AI ethics, NLP.</li>
+                <li><strong>Methodology</strong>: Hands-on learning; students build GPT models, explore GANs, and apply them in real-world projects.</li>
+                <li><strong>Outcome</strong>: Fully functional GPT model; deep understanding of Generative AI and problem-solving skills.</li>
+            </ul>
+            <p><strong>Duration</strong>: 8 weeks (16 lesson hours) | <strong>Class Size</strong>: Max 5 students | <strong>Next Session</strong>: Nov 2024</p>
+            <a href="{{ url_for('success') }}"  >Success Stories</a>
+            <br><br>
+            <div style="text-align: left;">
+                Join Us Today:   <a href="{{ url_for('register') }}" class="button signup-button" style="margin-right: 10px;">Sign Up</a>
+                Get Personalized Guidance: <a href="{{ url_for('schedule') }}" class="button schedule-button">Schedule</a>
+            </div>
+        </div>
+    </section>
+</section>
+
+<script>
+function openTab(event, tabId) {
+    // Remove active class from all tab buttons
+    document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
+    // Add active class to clicked tab button
+    event.currentTarget.classList.add('active');
+
+    // Hide all tab content
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    // Show the selected tab content
+    document.getElementById(tabId).classList.add('active');
+}
+</script>
+
+{% endblock %}

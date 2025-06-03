@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <!-- Include Bootstrap CSS for styling -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Include your custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/frmstyles.css') }}">
+    <!-- Include Font Awesome for eye icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <style>
+        /* Error Message Styling */
+        #email-error, #password-error {
+            display: none;
+            background-color: #f7e55b;
+            color: #e84113;
+            padding: 10px;
+            margin: 20px auto;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            text-align: center;
+            max-width: 500px;
+        }
+        #login-link {
+            display: none;
+            text-align: center;
+            margin-top: 10px;
+        }
+        /* Disable the Register button styling */
+        #register-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        /* Password input container */
+        .password-container {
+            position: relative;
+        }
+        .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #aaa;
+        }
+    </style>
+    <script>
+        let emailValid = false;
+        let passwordsValid = false;
+
+        // Function to validate the email field
+        function validateEmail() {
+            const emailInput = document.getElementById('email');
+            const emailError = document.getElementById('email-error');
+            const loginLink = document.getElementById('login-link');
+            const email = emailInput.value.trim();
+
+            emailError.style.display = 'none';
+            loginLink.style.display = 'none';
+            emailValid = false; // Reset emailValid
+
+            const emailPattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
+            if (!emailPattern.test(email)) {
+                emailError.textContent = 'Please enter a valid email address.';
+                emailError.style.display = 'block';
+                emailValid = false;
+                checkFormValidity();
+                return;
+            }
+
+            if (email) {
+                fetch('/check_email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.email_taken) {
+                        emailError.textContent = 'Email already registered.';
+                        emailError.style.display = 'block';
+                        loginLink.style.display = 'block';
+                        loginLink.innerHTML = '<a href="/login" class="login-link">Go to login.</a>';
+                        emailValid = false;
+                    } else {
+                        emailError.style.display = 'none';
+                        loginLink.style.display = 'none';
+                        emailValid = true;
+                    }
+                    checkFormValidity();
+                })
+                .catch(error => {
+                    console.error('Error checking email availability:', error);
+                    emailValid = false;
+                    checkFormValidity();
+                });
+            } else {
+                emailValid = false;
+                checkFormValidity();
+            }
+        }
+
+        // Function to validate the passwords
+        function validatePasswords() {
+            const newPassword = document.getElementById('password').value;
+            const repeatPassword = document.getElementById('repeat-password').value;
+            const passwordError = document.getElementById('password-error');
+
+            passwordsValid = false; // Reset passwordsValid
+            passwordError.style.display = "none";
+
+            const lengthValid = newPassword.length >= 8;
+            const requirementsValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&\W]).{8,}$/.test(newPassword);
+
+            if (!lengthValid) {
+                passwordError.textContent = "Password length must be at least 8 characters.";
+                passwordError.style.display = "block";
+                passwordsValid = false;
+                checkFormValidity();
+                return false;
+            }
+
+            if (!requirementsValid) {
+                passwordError.textContent = "Password must contain uppercase, lowercase, number, and special character.";
+                passwordError.style.display = "block";
+                passwordsValid = false;
+                checkFormValidity();
+                return false;
+            }
+
+            if (newPassword !== repeatPassword) {
+                if (repeatPassword.length > 0) {
+                    passwordError.textContent = "Passwords do not match.";
+                    passwordError.style.display = "block";
+                }
+                passwordsValid = false;
+                checkFormValidity();
+                return false;
+            }
+
+            passwordError.style.display = "none";
+            passwordsValid = true;
+            checkFormValidity();
+            return true;
+        }
+
+        // Function to check the overall form validity
+        function checkFormValidity() {
+            const registerBtn = document.getElementById('register-btn');
+            const nameInput = document.getElementById('name');
+            const roleSelect = document.getElementById('role');
+            const countrySelect = document.getElementById('country');
+            const postalCodeInput = document.getElementById('postal-code');
+
+            let isValid = true;
+
+            // Check if required fields are filled
+            if (nameInput.value.trim() === '') isValid = false;
+            if (roleSelect.value === '') isValid = false;
+            if (countrySelect.value === '') isValid = false;
+            if (postalCodeInput.value.trim() === '') isValid = false;
+
+            // Check email and passwords validity
+            if (!emailValid) isValid = false;
+            if (!passwordsValid) isValid = false;
+
+            registerBtn.disabled = !isValid;
+        }
+
+        // Function to toggle password visibility
+        function togglePasswordVisibility(id, iconId) {
+            const passwordField = document.getElementById(id);
+            const toggleIcon = document.getElementById(iconId);
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Clear error message when user starts typing
+        function clearPasswordError() {
+            const passwordError = document.getElementById('password-error');
+            passwordError.style.display = 'none';
+        }
+
+        // Event listeners
+        window.addEventListener('DOMContentLoaded', function() {
+            checkFormValidity(); // Initial check
+
+            const nameInput = document.getElementById('name');
+            const roleSelect = document.getElementById('role');
+            const countrySelect = document.getElementById('country');
+            const postalCodeInput = document.getElementById('postal-code');
+
+            nameInput.addEventListener('input', checkFormValidity);
+            roleSelect.addEventListener('change', checkFormValidity);
+            countrySelect.addEventListener('change', checkFormValidity);
+            postalCodeInput.addEventListener('input', checkFormValidity);
+        });
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <div class="form-container">
+        <div class="form-header">
+            <a href="https://www.stempro.org">
+                <img src="{{ url_for('static', filename='images/3.png') }}" alt="STEMPro Academy Logo">
+            </a>
+            <h2>Register with us</h2>
+        </div>
+        <div>
+            <p>Registration is quick and secure! We respect your privacy and only require minimal information.</p>
+        </div>
+        <form action="/enroll" method="post">
+            <!-- Name Field -->
+            <div class="form-group">
+                <input type="text" class="form-control" id="name" name="name" required placeholder="Enter your full name" oninput="checkFormValidity()">
+            </div>
+
+            <!-- Email Field -->
+            <div class="form-group">
+                <input type="email" class="form-control" id="email" name="email" required oninput="validateEmail()" placeholder="Enter your email">
+                <div id="email-error" class="error-message"></div>
+            </div>
+            <div id="login-link" class="login-link"></div>
+
+            <!-- Role and Country Dropdowns -->
+            <div class="dropdown-container">
+                <select class="dropdown-select" id="role" name="role" required onchange="checkFormValidity()">
+                    <option value="" disabled selected>You are</option>
+                    <option value="student">Student</option>
+                    <option value="parent">Parent of Student</option>
+                    <option value="teacher">Teacher</option>
+                    <option value="visitor">Visitor</option>
+                </select>
+            </div>
+
+            <div class="dropdown-container">
+                <select class="dropdown-select" id="country" name="country" required onchange="checkFormValidity()">
+                    <option value="" disabled selected>Select Country</option>
+                    <option value="USA">USA</option>
+                    <option value="Canada">Canada</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <!-- Additional Fields -->
+            <div class="form-group">
+                <input type="text" class="form-control" id="postal-code" name="postal_code" placeholder="Enter your postal code" required oninput="checkFormValidity()">
+            </div>
+            <div class="form-group">
+                <textarea class="form-control" id="comments" name="comments" rows="3" placeholder="Additional Comments (optional)"></textarea>
+            </div>
+
+            <!-- Password Fields -->
+            <div class="form-group password-container">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password (8+ chars, uppercase, lowercase, number, special char)" required oninput="validatePasswords(); clearPasswordError();">
+                <i class="fas fa-eye toggle-password" id="togglePassword" onclick="togglePasswordVisibility('password', 'togglePassword')"></i>
+            </div>
+            <div class="form-group password-container">
+                <input type="password" class="form-control" id="repeat-password" placeholder="Repeat your password" required oninput="validatePasswords(); clearPasswordError();">
+                <i class="fas fa-eye toggle-password" id="toggleRepeatPassword" onclick="togglePasswordVisibility('repeat-password', 'toggleRepeatPassword')"></i>
+                <div id="password-error" class="error-message"></div>
+            </div>
+
+            <!-- Buttons -->
+            <button type="submit" class="btn btn-primary btn-block" id="register-btn" disabled>Register</button>
+            <a href="{{ url_for('programs') }}" class="btn btn-cancel">Return to Home</a>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

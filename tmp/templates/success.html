@@ -1,0 +1,113 @@
+<!-- about.html -->
+{% extends 'base.html' %}
+
+{% block title %}About Us - StemPro Academy{% endblock %}
+
+{% block content %}
+
+<section>
+    <p>StemPro Academy students thrive with a project-based approach, earning top university admissions, global awards, and research success. Our programs empower students for academic and career achievement.</p>
+
+    <h2>Student Achievements & Success</h2>
+    <p>StemPro Academy proudly guides students to excel in top university applications, international competitions, research, and industry. Our project-based approach turns knowledge into skills, driving academic and professional success.</p>
+
+    <section class="tab-container">
+        <!-- Tab Buttons -->
+        <!-- <div class="tab-buttons">
+            <button class="tab-button active" onclick="openTab(event, 'admission-success')">College Admission Success Stories</button>
+            <button class="tab-button" onclick="openTab(event, 'competition-achievements')">Competitions and Innovation Achievements</button>
+            <button class="tab-button" onclick="openTab(event, 'academic-distinctions')">Academic and Technical Distinctions</button>
+            <button class="tab-button" onclick="openTab(event, 'publications-research')">Academic Publications and Research</button>
+            <button class="tab-button" onclick="openTab(event, 'career-development')">Internships and Career Development</button>
+        </div> -->
+        <div class="tab-buttons">
+            <button class="tab-button active" onclick="openTab(event, 'admission-success')">College Success</button>
+            <button class="tab-button" onclick="openTab(event, 'competition-achievements')">Competitions & Innovation</button>
+            <button class="tab-button" onclick="openTab(event, 'academic-distinctions')">Academic Distinctions</button>
+            <button class="tab-button" onclick="openTab(event, 'publications-research')">Publications & Research</button>
+            <button class="tab-button" onclick="openTab(event, 'career-development')">Career Development</button>
+        </div>
+
+        <!-- Tab Content: College Admission Success Stories -->
+        <div id="admission-success" class="tab-content active">
+            <h3>🏆 College Admission Success Stories</h3>
+            <p>Our students have secured admission to prestigious universities like MIT, Carnegie Mellon, and UC Berkeley by demonstrating advanced STEM and AI proficiencies. Personalized guidance and project-based learning prepare students to present their unique strengths, making them stand out in competitive admissions.</p>
+        </div>
+
+        <!-- Tab Content: Competitions and Innovation Achievements -->
+        <div id="competition-achievements" class="tab-content">
+            <h3>🥇 Competitions and Innovation Achievements</h3>
+            <ul>
+                <li><strong>Seattle Youth Entrepreneur Challenge:</strong> Award-winning innovations showcasing technical and business acumen.</li>
+                <li><strong>Conrad Challenge:</strong> Outstanding results for solving real-world interdisciplinary problems.</li>
+                <li><strong>Diamond Challenge:</strong> Top awards in one of the world’s premier high school entrepreneurship competitions.</li>
+            </ul>
+            <p>These achievements not only enhance college applications but foster critical skills for future careers.</p>
+        </div>
+
+        <!-- Tab Content: Academic and Technical Distinctions -->
+        <div id="academic-distinctions" class="tab-content">
+            <h3>📜 Academic and Technical Distinctions</h3>
+            <ul>
+                <li><strong>International Math Olympiad (IMO):</strong> Medals showcasing excellence in mathematical problem-solving.</li>
+                <li><strong>AIME Qualifiers:</strong> High achievements in the American Invitational Mathematics Examination.</li>
+                <li><strong>USACO Gold & Platinum Levels:</strong> Remarkable results in the United States of America Computing Olympiad, highlighting strong programming and algorithmic foundations.</li>
+            </ul>
+            <p>These distinctions reflect our commitment to fostering top-tier global talent in STEM and AI.</p>
+        </div>
+
+        <!-- Tab Content: Academic Publications and Research -->
+        <div id="publications-research" class="tab-content">
+            <h3>📚 Academic Publications and Research</h3>
+            <p>StemPro Academy encourages students to publish in top conferences and journals, enhancing their academic credentials. Notable achievements include:</p>
+            <ul>
+                <li><strong>MIT URTC:</strong> High-quality research presented at MIT’s prestigious Undergraduate Research Technology Conference.</li>
+                <li><strong>IEEE and Other Leading Journals:</strong> Papers published on AI, neural networks, and cutting-edge topics, establishing a strong foundation for academic careers.</li>
+            </ul>
+        </div>
+
+        <!-- Tab Content: Internships and Career Development -->
+        <div id="career-development" class="tab-content">
+            <h3>💼 Internships and Career Development</h3>
+            <p>We maintain strong industry ties, offering students practical experiences with leaders like Microsoft, Amazon, and Google. With guidance from mentors with extensive industry expertise, students gain invaluable insights and early career support, laying a strong foundation for future success.</p>
+        </div>
+    </section>
+</section>
+
+<section>
+    <h2>Testimonials</h2>
+    <blockquote>
+        "Working with StemPro Academy has been an incredible journey! With their guidance, my research on autonomous driving was accepted to the MIT URTC—an internationally renowned conference showcasing groundbreaking work in technology and engineering. I couldn’t have reached this milestone without their mentorship, which not only helped me build technical skills but also prepared me to present my research at such a prestigious level. I’m excited for the opportunity to present and share my work, and I’m truly grateful for the support every step of the way!"<br>
+        <strong>— Meadow, U.S., High School Research Student, 2024</strong>
+    </blockquote>
+
+    <blockquote>
+    We are so grateful for StemPro Academy! Both my daughter and son joined their programs, and now they are in their dream colleges! StemPro helped them join Conrad Challenges, the Entrepreneurship Challenge, and the College Ninja Series. The projects were very hands-on, and both kids learned so much. As a parent, I felt very supported and informed. I cannot thank the mentors and teachers enough for their guidance and care. Thank you, StemPro Academy!<br>
+    <strong>— Lily, U.S. Parent of StemPro Students (2021 & 2023)</strong>
+</blockquote>
+
+</section>
+<section>
+    <h2>Contact Us</h2>
+    <p>We’d love to hear from you! For inquiries or more information, reach out to us:</p>
+    <ul>
+        <li><strong>Email:</strong> <a href="mailto:info@stempro.org">info@stempro.org</a></li>
+        <li><strong>Phone:</strong> 425-230-0688</li>
+    </ul>
+</section>
+
+<script>
+function openTab(event, tabId) {
+    // Remove active class from all tab buttons
+    document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
+    // Add active class to clicked tab button
+    event.currentTarget.classList.add('active');
+
+    // Hide all tab content
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    // Show the selected tab content
+    document.getElementById(tabId).classList.add('active');
+}
+</script>
+
+{% endblock %}
