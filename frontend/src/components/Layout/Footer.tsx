@@ -41,7 +41,6 @@ export function Footer() {
   const footerLinks = [
     { label: 'Privacy', href: '/privacy' },
     { label: 'Terms of Use', href: '/terms' },
-    { label: 'Join Us', href: '/join-us' },
     { label: 'Resources', href: '/resources' },
   ];
 

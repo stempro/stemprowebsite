@@ -6,7 +6,7 @@ from contextlib import asynccontextmanager
 import os
 from pathlib import Path
 
-from app.api import auth, users, courses, enrollments, schedules
+from app.api import auth, users, courses, enrollments, schedules, job_applications, collegeninja
 from app.core.config import settings
 from app.utils.file_db import FileDB
 
@@ -44,6 +44,8 @@ app.include_router(users.router, prefix="/api/users", tags=["users"])
 app.include_router(courses.router, prefix="/api/courses", tags=["courses"])
 app.include_router(enrollments.router, prefix="/api/enrollments", tags=["enrollments"])
 app.include_router(schedules.router, prefix="/api/schedules", tags=["schedules"])
+app.include_router(job_applications.router, prefix="/api/job-applications", tags=["job-applications"])
+app.include_router(collegeninja.router, prefix="/api/collegeninja", tags=["collegeninja"])
 
 # Serve static files in production
 if settings.ENVIRONMENT == "production":

@@ -1,15 +1,16 @@
 'use client';
 
-import { Box, Flex, Button, IconButton, Text, Menu, MenuButton, MenuList, MenuItem, Avatar, HStack, useColorModeValue, Container, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, VStack, useDisclosure, Stack } from '@chakra-ui/react';
+import { Box, Flex, Button, IconButton, Text, Menu, MenuButton, MenuList, MenuItem, Avatar, HStack, useColorModeValue, Container, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, VStack, useDisclosure, Stack, Badge } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { FiClock } from 'react-icons/fi';
 
 const MotionBox = motion(Box);
 
-const NavLink = ({ children, href, onClick }: { children: React.ReactNode; href: string; onClick?: () => void }) => (
+const NavLink = ({ children, href, onClick, showBadge = false }: { children: React.ReactNode; href: string; onClick?: () => void; showBadge?: boolean }) => (
   <Link href={href} onClick={onClick}>
     <Box
       px={3}
@@ -22,8 +23,24 @@ const NavLink = ({ children, href, onClick }: { children: React.ReactNode; href:
       }}
       transition="all 0.2s"
       cursor="pointer"
+      position="relative"
     >
-      {children}
+      <HStack spacing={2}>
+        <Text>{children}</Text>
+        {showBadge && (
+          <Badge
+            colorScheme="purple"
+            variant="solid"
+            fontSize="xs"
+            display="flex"
+            alignItems="center"
+            gap={1}
+          >
+            <FiClock size={10} />
+            Soon
+          </Badge>
+        )}
+      </HStack>
     </Box>
   </Link>
 );
@@ -37,8 +54,10 @@ export function Header() {
   const navItems = [
     { label: 'Courses', href: '/courses' },
     { label: 'Programs', href: '/programs' },
+    { label: 'CollegeNinja', href: '/collegeninja' },
     { label: 'Success Stories', href: '/success' },
     { label: 'About Us', href: '/about' },
+    { label: 'Join Us', href: '/join-us' },
   ];
 
   return (
@@ -76,7 +95,11 @@ export function Header() {
 
             <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
               {navItems.map((item) => (
-                <NavLink key={item.href} href={item.href}>
+                <NavLink
+                  key={item.href}
+                  href={item.href}
+                  showBadge={item.label === 'CollegeNinja'}
+                >
                   {item.label}
                 </NavLink>
               ))}
@@ -125,7 +148,12 @@ export function Header() {
           <DrawerBody>
             <VStack spacing={4} align="stretch" mt={4}>
               {navItems.map((item) => (
-                <NavLink key={item.href} href={item.href} onClick={onClose}>
+                <NavLink
+                  key={item.href}
+                  href={item.href}
+                  onClick={onClose}
+                  showBadge={item.label === 'CollegeNinja'}
+                >
                   {item.label}
                 </NavLink>
               ))}

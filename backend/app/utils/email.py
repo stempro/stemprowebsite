@@ -196,3 +196,145 @@ async def send_schedule_update_notification(email: str, first_name: str, schedul
     # Implement your email sending logic here
     # Example: await send_email(email, subject, body)
     print(f"Sending schedule update to {email} for {formatted_date}")
+
+
+async def send_job_application_confirmation(email: str, name: str, position: str):
+    """Send confirmation email to job applicant"""
+    subject = f"Application Received - {position} at StemPro Academy"
+    body = f"""
+    Dear {name},
+
+    Thank you for your interest in joining StemPro Academy as a {position}!
+
+    We have received your application and our hiring team will review it carefully.
+    You can expect to hear from us within 5-7 business days if your qualifications
+    match our requirements.
+
+    In the meantime, feel free to explore our website to learn more about our mission
+    and the impact we're making in STEM education.
+
+    Thank you for considering StemPro Academy as your next career opportunity.
+
+    Best regards,
+    StemPro Academy Hiring Team
+    """
+
+    # Implement your email sending logic here
+    # Example: await send_email(email, subject, body)
+    print(f"Sending job application confirmation to {email}")
+
+async def send_job_application_notification(name: str, position: str, email: str):
+    """Send notification to admin about new job application"""
+    subject = f"New Job Application - {position}"
+    body = f"""
+    New job application received:
+
+    Applicant: {name}
+    Position: {position}
+    Email: {email}
+    Date: {datetime.now().strftime("%Y-%m-%d %H:%M")}
+
+    Please log in to the admin panel to review the application.
+
+    Best regards,
+    StemPro Academy System
+    """
+
+    # Send to admin email
+    admin_email = "hr@stempro.org"  # or get from settings
+    # Example: await send_email(admin_email, subject, body)
+    print(f"Sending job application notification to admin about {name}'s application")
+
+# Add these functions to your existing email.py file
+
+async def send_collegeninja_student_confirmation(email: str, name: str):
+    """Send confirmation email to CollegeNinja student/parent signup"""
+    subject = "Welcome to CollegeNinja - Early Access Confirmed!"
+    body = f"""
+    Dear {name},
+
+    Thank you for signing up for early access to CollegeNinja!
+
+    We're thrilled to have you join our revolutionary college planning platform.
+    CollegeNinja will transform how students navigate the college application process
+    with AI-powered recommendations, smart timeline planning, and expert guidance.
+
+    What's Next:
+    - We'll add you to our early access list
+    - You'll receive exclusive updates about our launch
+    - Be among the first to experience CollegeNinja when we go live in Q2 2025
+
+    In the meantime, explore our other programs at StemPro Academy to get a head start
+    on your college preparation journey.
+
+    Stay tuned for exciting updates!
+
+    Best regards,
+    The CollegeNinja Team
+    StemPro Academy
+    """
+
+    # Implement your email sending logic here
+    print(f"Sending CollegeNinja student confirmation to {email}")
+
+async def send_collegeninja_counselor_confirmation(email: str, name: str):
+    """Send confirmation email to CollegeNinja counselor signup"""
+    subject = "CollegeNinja Partnership - Thank You for Your Interest!"
+    body = f"""
+    Dear {name},
+
+    Thank you for your interest in partnering with CollegeNinja!
+
+    We're excited about the possibility of working together to revolutionize
+    college planning and admissions guidance. As a counselor partner, you'll
+    have access to cutting-edge AI tools and resources to better serve your students.
+
+    Partnership Benefits:
+    - Early access to our AI-powered platform
+    - Professional development opportunities
+    - Collaboration with our expert team
+    - Tools to enhance your counseling practice
+
+    Our partnership team will review your information and contact you within
+    5-7 business days to discuss next steps and explore how we can work together.
+
+    We look forward to partnering with you!
+
+    Best regards,
+    The CollegeNinja Team
+    StemPro Academy
+    """
+
+    # Implement your email sending logic here
+    print(f"Sending CollegeNinja counselor confirmation to {email}")
+
+async def send_collegeninja_admin_notification(signup_type: str, name: str, email: str, grade_level: str = None):
+    """Send notification to admin about new CollegeNinja signup"""
+    subject = f"New CollegeNinja {signup_type.title()} Signup"
+
+    if signup_type == "student":
+        body = f"""
+        New CollegeNinja student/parent signup:
+
+        Name: {name}
+        Email: {email}
+        Grade Level: {grade_level}
+        Date: {datetime.now().strftime("%Y-%m-%d %H:%M")}
+
+        Please add them to the early access list and follow up as needed.
+        """
+    else:
+        body = f"""
+        New CollegeNinja counselor partnership inquiry:
+
+        Name: {name}
+        Email: {email}
+        Date: {datetime.now().strftime("%Y-%m-%d %H:%M")}
+
+        Please review and reach out to discuss partnership opportunities.
+        """
+
+    # Send to admin email
+    admin_email = "collegeninja@stempro.org"  # or get from settings
+    # Example: await send_email(admin_email, subject, body)
+    print(f"Sending CollegeNinja admin notification about {name}'s signup")

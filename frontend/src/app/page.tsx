@@ -86,9 +86,9 @@ export default function HomePage() {
   ];
 
   const stats = [
-    { number: '95%', label: 'Admitted to Selective STEM Colleges.' },
-    { number: '200+', label: 'Students Taught' },
-    { number: '50+', label: 'Student Research Papers' },
+    { number: '95%', label: 'College Acceptance Rate' },
+    { number: '1000+', label: 'Students Taught' },
+    { number: '50+', label: 'Research Papers' },
     { number: '4.9/5', label: 'Student Rating' }
   ];
 
@@ -303,7 +303,7 @@ export default function HomePage() {
                   shadow="lg"
                   _hover={{ shadow: '2xl' }}
                   cursor="pointer"
-                  onClick={() => router.push('/programs')}
+                  onClick={() => program.title === 'CollegeNinja' ? router.push('/collegeninja') : router.push('/programs')}
                 >
                   <Box
                     position="absolute"

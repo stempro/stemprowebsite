@@ -178,7 +178,7 @@ export default function ProgramsPage() {
                           <Button
                             colorScheme={program.color}
                             size="lg"
-                            onClick={() => router.push('/register')}
+                            onClick={() => program.id === 'college-ninja' ? router.push('/collegeninja') : router.push('/register')}
                             flex={1}
                             _hover={{
                               transform: 'translateY(-2px)',
@@ -186,7 +186,7 @@ export default function ProgramsPage() {
                             }}
                             transition="all 0.2s"
                           >
-                            Sign Up Now
+                            {program.id === 'college-ninja' ? 'Learn More' : 'Sign Up Now'}
                           </Button>
                           <Button
                             variant="outline"
