@@ -179,7 +179,7 @@ PROGRAMS = [
     },
     {
         "id": "junior-researcher",
-        "name": "Junior Researcher Program",
+        "name": "High School Research Program",
         "description": "High-Impact Research Mentorship",
         "duration": "Flexible",
         "max_students": 1,

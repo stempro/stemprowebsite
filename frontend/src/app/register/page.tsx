@@ -36,8 +36,9 @@ export default function RegisterPage() {
     { value: 'Generative AI Program', label: 'Generative AI Program - Middle School' },
     { value: 'Advanced Generative AI Program', label: 'Advanced AI Program - High School' },
     { value: 'CollegeNinja', label: 'CollegeNinja: Code-to-Campus' },
-    { value: 'Junior Researcher Program', label: 'Junior Researcher Program' },
-    { value: 'Interview Clinic', label: 'Interview Clinic' }
+    { value: 'High School Research Program', label: 'High School Research Program' },
+    { value: 'Interview Clinic', label: 'Interview Clinic' },
+    { value: 'Music AI Research Program', label: 'Music AI Research Program with Harmonic AI' }
   ];
 
   const handleChange = (e: any) => {
@@ -51,14 +52,49 @@ export default function RegisterPage() {
     e.preventDefault();
     setIsSubmitting(true);
 
+    // Debug: Log the form data and API URL
+    console.log('Form Data:', formData);
+    console.log('API URL:', process.env.NEXT_PUBLIC_API_URL);
+
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/enrollments/`, {
+      // Check if API URL is defined
+      if (!process.env.NEXT_PUBLIC_API_URL) {
+        throw new Error('API URL is not configured. Please check your environment variables.');
+      }
+
+      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/enrollments/`;
+      console.log('Full API URL:', apiUrl);
+
+      // Create the payload with proper structure
+      const payload = {
+        first_name: formData.first_name.trim(),
+        last_name: formData.last_name.trim(),
+        email: formData.email.trim().toLowerCase(),
+        phone: formData.phone.trim(),
+        zip_code: formData.zip_code.trim(),
+        course: formData.course,
+        student_type: formData.student_type,
+        country: formData.country,
+        comments: formData.comments.trim()
+      };
+
+      console.log('Payload being sent:', payload);
+
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
+
+      // Log response details for debugging
+      console.log('Response status:', response.status);
+      console.log('Response headers:', response.headers);
+
+      // Try to get response text regardless of status
+      const responseText = await response.text();
+      console.log('Response text:', responseText);
 
       if (response.ok) {
         toast({
@@ -68,21 +104,91 @@ export default function RegisterPage() {
           duration: 5000,
           isClosable: true,
         });
-        router.push('/');
+
+        // Reset form
+        setFormData({
+          first_name: '',
+          last_name: '',
+          email: '',
+          phone: '',
+          zip_code: '',
+          course: '',
+          student_type: '',
+          country: '',
+          comments: ''
+        });
+
+        // Redirect after a short delay
+        setTimeout(() => {
+          router.push('/');
+        }, 2000);
       } else {
-        throw new Error('Failed to register');
+        // Try to parse error message from response
+        let errorMessage = 'Registration failed. Please try again.';
+        let errorDetails = '';
+
+        try {
+          const errorData = JSON.parse(responseText);
+          console.log('Error data:', errorData);
+
+          // Handle different error response formats
+          if (errorData.message) {
+            errorMessage = errorData.message;
+          } else if (errorData.detail) {
+            if (typeof errorData.detail === 'string') {
+              errorMessage = errorData.detail;
+            } else if (Array.isArray(errorData.detail)) {
+              errorMessage = errorData.detail.map((err: any) => err.msg || err.message).join(', ');
+            }
+          } else if (errorData.error) {
+            errorMessage = errorData.error;
+          }
+
+          // If there are field-specific errors
+          if (errorData.errors) {
+            errorDetails = Object.entries(errorData.errors)
+              .map(([field, errors]: [string, any]) => `${field}: ${errors}`)
+              .join('\n');
+          }
+        } catch (e) {
+          // If response is not JSON, use the response text
+          if (responseText.includes("'str' object has no attribute 'exists'")) {
+            errorMessage = 'Server configuration error. The backend is trying to validate data incorrectly.';
+            errorDetails = 'Please contact support or check the backend enrollment validation code.';
+          } else {
+            errorMessage = `Error ${response.status}: ${response.statusText || responseText}`;
+          }
+        }
+
+        throw new Error(errorDetails ? `${errorMessage}\n${errorDetails}` : errorMessage);
       }
-    } catch (error) {
+    } catch (error: any) {
+      console.error('Registration error:', error);
+
       toast({
         title: 'Registration Failed',
-        description: 'Something went wrong. Please try again.',
+        description: error.message || 'Something went wrong. Please check your connection and try again.',
         status: 'error',
-        duration: 5000,
+        duration: 7000,
         isClosable: true,
       });
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  // Validate form before submission
+  const isFormValid = () => {
+    return (
+      formData.first_name.trim() !== '' &&
+      formData.last_name.trim() !== '' &&
+      formData.email.trim() !== '' &&
+      formData.phone.trim() !== '' &&
+      formData.zip_code.trim() !== '' &&
+      formData.course !== '' &&
+      formData.student_type !== '' &&
+      formData.country !== ''
+    );
   };
 
   return (
@@ -283,6 +389,7 @@ export default function RegisterPage() {
                     size="lg"
                     width="full"
                     isLoading={isSubmitting}
+                    isDisabled={!isFormValid()}
                     loadingText="Registering..."
                     fontSize="lg"
                     py={7}

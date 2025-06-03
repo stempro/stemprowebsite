@@ -1,10 +1,10 @@
 'use client';
 
-import { Box, Container, Heading, Text, VStack, Tab, TabList, TabPanel, TabPanels, Tabs, Button, Stack, List, ListItem, Badge, Icon, useColorModeValue } from '@chakra-ui/react';
+import { Box, Container, Heading, Text, VStack, Tab, TabList, TabPanel, TabPanels, Tabs, Button, Stack, List, ListItem, Badge, Icon, useColorModeValue, Alert, AlertIcon, AlertTitle, AlertDescription, Link, HStack, Flex } from '@chakra-ui/react';
 import { Header } from '@/components/Layout/Header';
 import { Footer } from '@/components/Layout/Footer';
 import { motion } from 'framer-motion';
-import { FiCode, FiUsers, FiBookOpen, FiAward, FiBriefcase, FiClock } from 'react-icons/fi';
+import { FiCode, FiUsers, FiBookOpen, FiAward, FiBriefcase, FiClock, FiMusic, FiMail, FiExternalLink } from 'react-icons/fi';
 import { useRouter } from 'next/navigation';
 
 const MotionBox = motion(Box);
@@ -14,6 +14,12 @@ export default function ProgramsPage() {
   const tabBg = useColorModeValue('white', 'gray.800');
   const borderColor = useColorModeValue('gray.200', 'gray.700');
   const highlightBg = useColorModeValue('blue.50', 'blue.900');
+  const urgentBg = useColorModeValue('purple.50', 'purple.900');
+  const urgentBorder = useColorModeValue('purple.400', 'purple.600');
+  const gradientAlert = useColorModeValue(
+    'linear(to-r, purple.500, pink.500)',
+    'linear(to-r, purple.700, pink.700)'
+  );
 
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
@@ -44,7 +50,7 @@ export default function ProgramsPage() {
     },
     {
       id: 'junior-researcher',
-      title: '🧑‍🔬 Junior Researcher Program',
+      title: '🧑‍🔬 High School Research Program',
       subtitle: 'High-Impact Research Mentorship',
       description: 'Empowering students to achieve excellence and recognition through real-world research projects. Our students have earned prestigious publications in IEEE journals and presented their work at MIT URTC.',
       highlights: [
@@ -86,6 +92,44 @@ export default function ProgramsPage() {
 
   return (
     <Box minH="100vh" display="flex" flexDirection="column">
+      {/* Top Banner Alert */}
+      <Box
+        bgGradient={gradientAlert}
+        color="white"
+        py={3}
+        px={4}
+        position="relative"
+        overflow="hidden"
+      >
+        <MotionBox
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Container maxW="container.xl">
+            <Flex align="center" justify="center" wrap="wrap" gap={2}>
+              <Icon as={FiMusic} boxSize={5} />
+              <Text fontSize="lg" fontWeight="bold">
+                🎵 NEW: Music AI Research Program Now Open!
+              </Text>
+              <Text fontSize="md">
+                Join our groundbreaking research collaboration with Moodbox.IO. Only 2 spots remaining!
+              </Text>
+              <Button
+                size="sm"
+                bg="whiteAlpha.200"
+                color="white"
+                _hover={{ bg: 'whiteAlpha.300' }}
+                onClick={() => router.push('/register')}
+                ml={2}
+              >
+                Register Now →
+              </Button>
+            </Flex>
+          </Container>
+        </MotionBox>
+      </Box>
+
       <Header />
 
       <Box flex="1" py={16}>
@@ -100,6 +144,105 @@ export default function ProgramsPage() {
             </VStack>
           </MotionBox>
 
+          {/* Music Research Program Highlight Box */}
+          <MotionBox
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            bg={urgentBg}
+            borderWidth="2px"
+            borderColor={urgentBorder}
+            borderRadius="xl"
+            p={8}
+            mb={12}
+            position="relative"
+            overflow="hidden"
+          >
+            {/* Animated background pattern */}
+            <Box
+              position="absolute"
+              top="-50%"
+              right="-10%"
+              w="300px"
+              h="300px"
+              bg="purple.300"
+              borderRadius="full"
+              opacity={0.1}
+              filter="blur(40px)"
+            />
+
+            <VStack spacing={4} position="relative" zIndex={1}>
+              <HStack spacing={3}>
+                <Icon as={FiMusic} boxSize={8} color="purple.600" />
+                <Heading size="lg" color={useColorModeValue('purple.800', 'purple.200')}>
+                  🚀 Onboard Now! Music AI Research Program with Moodbox.IO
+                </Heading>
+              </HStack>
+
+              <Text fontSize="lg" fontWeight="medium" textAlign="center">
+                Join our exciting Music Analysis & Music Therapy research program in collaboration with
+                Moodbox.IO, a cutting-edge music technology startup revolutionizing therapeutic applications of AI in music.
+              </Text>
+
+              <Flex
+                direction={{ base: 'column', md: 'row' }}
+                gap={6}
+                w="full"
+                justify="center"
+                align="center"
+              >
+                <VStack>
+                  <Badge colorScheme="purple" fontSize="lg" p={3} borderRadius="md" variant="solid">
+                    ⚡ FILLING FAST: 8/10 Spaces Taken!
+                  </Badge>
+                  <Text fontSize="sm" color="gray.600">Only 2 spots remaining</Text>
+                </VStack>
+
+                <VStack align="start" spacing={1}>
+                  <HStack>
+                    <Icon as={FiClock} color="purple.600" />
+                    <Text fontWeight="bold">Duration: 10 weeks</Text>
+                  </HStack>
+                  <HStack>
+                    <Icon as={FiUsers} color="purple.600" />
+                    <Text fontWeight="bold">Application Deadline: June 15, 2025</Text>
+                  </HStack>
+                </VStack>
+              </Flex>
+
+              <Stack direction={{ base: 'column', sm: 'row' }} spacing={4} pt={4}>
+                <Button
+                  colorScheme="purple"
+                  size="lg"
+                  onClick={() => router.push('/register')}
+                  rightIcon={<FiExternalLink />}
+                  _hover={{
+                    transform: 'translateY(-2px)',
+                    boxShadow: 'xl',
+                  }}
+                  transition="all 0.2s"
+                >
+                  Register Now
+                </Button>
+                <Button
+                  variant="outline"
+                  colorScheme="purple"
+                  size="lg"
+                  as={Link}
+                  href="mailto:info@stempro.org?subject=Music AI Research Program Inquiry"
+                  leftIcon={<FiMail />}
+                  _hover={{
+                    transform: 'translateY(-2px)',
+                    boxShadow: 'lg',
+                  }}
+                  transition="all 0.2s"
+                >
+                  Questions? Email us
+                </Button>
+              </Stack>
+            </VStack>
+          </MotionBox>
+
           {/* Programs Tabs */}
           <MotionBox
             initial={{ opacity: 0, y: 30 }}
@@ -109,7 +252,7 @@ export default function ProgramsPage() {
             <Tabs variant="soft-rounded" colorScheme="blue" size="lg">
               <TabList mb={8} justifyContent="center" flexWrap="wrap">
                 <Tab mx={2} mb={2}>CollegeNinja</Tab>
-                <Tab mx={2} mb={2}>Junior Researcher</Tab>
+                <Tab mx={2} mb={2}>High School Research</Tab>
                 <Tab mx={2} mb={2}>Interview Clinic</Tab>
               </TabList>
 

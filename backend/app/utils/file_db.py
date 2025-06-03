@@ -8,7 +8,6 @@ from datetime import datetime, timezone
 import random
 from contextlib import contextmanager
 import sys
-
 import time
 
 class FileDB:
@@ -21,6 +20,8 @@ class FileDB:
         self.enrollments_file = self.data_dir / "enrollments.json"
         self.schedules_file = self.data_dir / "schedules.json"
         self.reset_codes_file = self.data_dir / "reset_codes.json"
+        self.job_applications_file = self.data_dir / "job_applications.json"
+        self.collegeninja_signups_file = self.data_dir / "collegeninja_signups.json"
 
     def initialize_files(self):
         """Initialize JSON files if they don't exist"""
@@ -28,7 +29,9 @@ class FileDB:
             (self.users_file, []),
             (self.enrollments_file, []),
             (self.schedules_file, []),
-            (self.reset_codes_file, {})
+            (self.reset_codes_file, {}),
+            (self.job_applications_file, {"applications": []}),
+            (self.collegeninja_signups_file, {"students": [], "counselors": []})
         ]
 
         for file_path, default_content in files:
@@ -76,6 +79,10 @@ class FileDB:
             # Return default empty structure
             if "users" in str(file_path) or "enrollments" in str(file_path) or "schedules" in str(file_path):
                 return []
+            elif "job_applications" in str(file_path):
+                return {"applications": []}
+            elif "collegeninja_signups" in str(file_path):
+                return {"students": [], "counselors": []}
             else:
                 return {}
 
@@ -87,6 +94,10 @@ class FileDB:
             # Return default empty structure if file is corrupted or missing
             if "users" in str(file_path) or "enrollments" in str(file_path) or "schedules" in str(file_path):
                 return []
+            elif "job_applications" in str(file_path):
+                return {"applications": []}
+            elif "collegeninja_signups" in str(file_path):
+                return {"students": [], "counselors": []}
             else:
                 return {}
 
@@ -178,7 +189,7 @@ class FileDB:
 
         enrollment_data['id'] = str(uuid.uuid4())
         enrollment_data['created_at'] = datetime.utcnow().isoformat()
-        enrollment_data['status'] = 'pending'
+        enrollment_data['status'] = enrollment_data.get('status', 'pending')
 
         enrollments.append(enrollment_data)
         self._write_json(self.enrollments_file, enrollments)
@@ -232,11 +243,18 @@ class FileDB:
             del reset_codes[email.lower()]
             self._write_json(self.reset_codes_file, reset_codes)
 
-    # Add these methods to your existing file_db.py FileDB class
-
+    # Schedule operations - FIXED
     def create_schedule(self, schedule_data: dict) -> dict:
         """Create a new schedule"""
-        schedules = self._read_json('schedules.json')
+        schedules = self._read_json(self.schedules_file)
+
+        # Handle both list and dict structures
+        if isinstance(schedules, dict) and 'schedules' in schedules:
+            schedule_list = schedules['schedules']
+        else:
+            # Convert to proper structure
+            schedule_list = schedules if isinstance(schedules, list) else []
+            schedules = {'schedules': schedule_list}
 
         # Generate unique ID
         schedule_id = f"sch_{datetime.now().strftime('%Y%m%d%H%M%S')}_{random.randint(1000, 9999)}"
@@ -252,17 +270,25 @@ class FileDB:
         }
 
         schedules['schedules'].append(schedule)
-        self._write_json('schedules.json', schedules)
+        self._write_json(self.schedules_file, schedules)
 
         return schedule
 
     def get_schedules(self, skip: int = 0, limit: int = 100) -> List[dict]:
         """Get all schedules with pagination"""
-        schedules = self._read_json('schedules.json')
+        schedules = self._read_json(self.schedules_file)
+
+        # Handle both list and dict structures
+        if isinstance(schedules, dict) and 'schedules' in schedules:
+            schedule_list = schedules['schedules']
+        elif isinstance(schedules, list):
+            schedule_list = schedules
+        else:
+            schedule_list = []
 
         # Sort by created_at descending (newest first)
         sorted_schedules = sorted(
-            schedules.get('schedules', []),
+            schedule_list,
             key=lambda x: x.get('created_at', ''),
             reverse=True
         )
@@ -272,9 +298,17 @@ class FileDB:
 
     def get_schedule_by_id(self, schedule_id: str) -> Optional[dict]:
         """Get schedule by ID"""
-        schedules = self._read_json('schedules.json')
+        schedules = self._read_json(self.schedules_file)
 
-        for schedule in schedules.get('schedules', []):
+        # Handle both list and dict structures
+        if isinstance(schedules, dict) and 'schedules' in schedules:
+            schedule_list = schedules['schedules']
+        elif isinstance(schedules, list):
+            schedule_list = schedules
+        else:
+            schedule_list = []
+
+        for schedule in schedule_list:
             if schedule['id'] == schedule_id:
                 return schedule
 
@@ -282,41 +316,64 @@ class FileDB:
 
     def update_schedule(self, schedule_id: str, update_data: dict) -> Optional[dict]:
         """Update schedule"""
-        schedules = self._read_json('schedules.json')
+        schedules = self._read_json(self.schedules_file)
 
-        for i, schedule in enumerate(schedules.get('schedules', [])):
+        # Handle both list and dict structures
+        if isinstance(schedules, dict) and 'schedules' in schedules:
+            schedule_list = schedules['schedules']
+        else:
+            schedule_list = schedules if isinstance(schedules, list) else []
+            schedules = {'schedules': schedule_list}
+
+        for i, schedule in enumerate(schedule_list):
             if schedule['id'] == schedule_id:
                 # Update fields
-                schedules['schedules'][i].update(update_data)
-                schedules['schedules'][i]['updated_at'] = datetime.now(timezone.utc).isoformat()
+                schedule_list[i].update(update_data)
+                schedule_list[i]['updated_at'] = datetime.now(timezone.utc).isoformat()
 
-                self._write_json('schedules.json', schedules)
-                return schedules['schedules'][i]
+                schedules['schedules'] = schedule_list
+                self._write_json(self.schedules_file, schedules)
+                return schedule_list[i]
 
         return None
 
     def delete_schedule(self, schedule_id: str) -> bool:
         """Delete schedule"""
-        schedules = self._read_json('schedules.json')
+        schedules = self._read_json(self.schedules_file)
 
-        original_count = len(schedules.get('schedules', []))
+        # Handle both list and dict structures
+        if isinstance(schedules, dict) and 'schedules' in schedules:
+            schedule_list = schedules['schedules']
+        else:
+            schedule_list = schedules if isinstance(schedules, list) else []
+            schedules = {'schedules': schedule_list}
+
+        original_count = len(schedule_list)
         schedules['schedules'] = [
-            s for s in schedules.get('schedules', [])
+            s for s in schedule_list
             if s['id'] != schedule_id
         ]
 
         if len(schedules['schedules']) < original_count:
-            self._write_json('schedules.json', schedules)
+            self._write_json(self.schedules_file, schedules)
             return True
 
         return False
 
     def get_schedules_by_email(self, email: str) -> List[dict]:
         """Get all schedules for a specific email"""
-        schedules = self._read_json('schedules.json')
+        schedules = self._read_json(self.schedules_file)
+
+        # Handle both list and dict structures
+        if isinstance(schedules, dict) and 'schedules' in schedules:
+            schedule_list = schedules['schedules']
+        elif isinstance(schedules, list):
+            schedule_list = schedules
+        else:
+            schedule_list = []
 
         user_schedules = [
-            s for s in schedules.get('schedules', [])
+            s for s in schedule_list
             if s.get('email', '').lower() == email.lower()
         ]
 
@@ -327,9 +384,10 @@ class FileDB:
             reverse=True
         )
 
+    # Job application operations
     def create_job_application(self, application_data: dict) -> dict:
         """Create a new job application"""
-        applications = self._read_json('job_applications.json')
+        applications = self._read_json(self.job_applications_file)
 
         # Generate unique ID
         app_id = f"job_{datetime.now().strftime('%Y%m%d%H%M%S')}_{random.randint(1000, 9999)}"
@@ -342,14 +400,17 @@ class FileDB:
             **application_data
         }
 
+        if 'applications' not in applications:
+            applications = {'applications': []}
+
         applications['applications'].append(application)
-        self._write_json('job_applications.json', applications)
+        self._write_json(self.job_applications_file, applications)
 
         return application
 
     def get_job_applications(self, skip: int = 0, limit: int = 100) -> List[dict]:
         """Get all job applications with pagination"""
-        applications = self._read_json('job_applications.json')
+        applications = self._read_json(self.job_applications_file)
 
         # Sort by created_at descending (newest first)
         sorted_applications = sorted(
@@ -363,7 +424,7 @@ class FileDB:
 
     def get_job_application_by_id(self, application_id: str) -> Optional[dict]:
         """Get job application by ID"""
-        applications = self._read_json('job_applications.json')
+        applications = self._read_json(self.job_applications_file)
 
         for application in applications.get('applications', []):
             if application['id'] == application_id:
@@ -373,7 +434,7 @@ class FileDB:
 
     def update_job_application(self, application_id: str, update_data: dict) -> Optional[dict]:
         """Update job application"""
-        applications = self._read_json('job_applications.json')
+        applications = self._read_json(self.job_applications_file)
 
         for i, application in enumerate(applications.get('applications', [])):
             if application['id'] == application_id:
@@ -381,14 +442,14 @@ class FileDB:
                 applications['applications'][i].update(update_data)
                 applications['applications'][i]['updated_at'] = datetime.now(timezone.utc).isoformat()
 
-                self._write_json('job_applications.json', applications)
+                self._write_json(self.job_applications_file, applications)
                 return applications['applications'][i]
 
         return None
 
     def delete_job_application(self, application_id: str) -> bool:
         """Delete job application"""
-        applications = self._read_json('job_applications.json')
+        applications = self._read_json(self.job_applications_file)
 
         original_count = len(applications.get('applications', []))
         applications['applications'] = [
@@ -397,114 +458,117 @@ class FileDB:
         ]
 
         if len(applications['applications']) < original_count:
-            self._write_json('job_applications.json', applications)
+            self._write_json(self.job_applications_file, applications)
             return True
 
         return False
 
-def create_collegeninja_student(self, student_data: dict) -> dict:
-    """Create a new CollegeNinja student signup"""
-    signups = self._read_json('collegeninja_signups.json')
+    # CollegeNinja operations
+    def create_collegeninja_student(self, student_data: dict) -> dict:
+        """Create a new CollegeNinja student signup"""
+        signups = self._read_json(self.collegeninja_signups_file)
 
-    # Generate unique ID
-    student_id = f"cn_student_{datetime.now().strftime('%Y%m%d%H%M%S')}_{random.randint(1000, 9999)}"
+        # Generate unique ID
+        student_id = f"cn_student_{datetime.now().strftime('%Y%m%d%H%M%S')}_{random.randint(1000, 9999)}"
 
-    # Create student record
-    student = {
-        'id': student_id,
-        'created_at': datetime.now(timezone.utc).isoformat(),
-        'status': 'pending',
-        **student_data
-    }
+        # Create student record
+        student = {
+            'id': student_id,
+            'created_at': datetime.now(timezone.utc).isoformat(),
+            'status': 'pending',
+            **student_data
+        }
 
-    if 'students' not in signups:
-        signups['students'] = []
+        if 'students' not in signups:
+            signups['students'] = []
 
-    signups['students'].append(student)
-    self._write_json('collegeninja_signups.json', signups)
+        signups['students'].append(student)
+        self._write_json(self.collegeninja_signups_file, signups)
 
-    return student
+        return student
 
-def create_collegeninja_counselor(self, counselor_data: dict) -> dict:
-    """Create a new CollegeNinja counselor signup"""
-    signups = self._read_json('collegeninja_signups.json')
+    def create_collegeninja_counselor(self, counselor_data: dict) -> dict:
+        """Create a new CollegeNinja counselor signup"""
+        signups = self._read_json(self.collegeninja_signups_file)
 
-    # Generate unique ID
-    counselor_id = f"cn_counselor_{datetime.now().strftime('%Y%m%d%H%M%S')}_{random.randint(1000, 9999)}"
+        # Generate unique ID
+        counselor_id = f"cn_counselor_{datetime.now().strftime('%Y%m%d%H%M%S')}_{random.randint(1000, 9999)}"
 
-    # Create counselor record
-    counselor = {
-        'id': counselor_id,
-        'created_at': datetime.now(timezone.utc).isoformat(),
-        'status': 'pending',
-        **counselor_data
-    }
+        # Create counselor record
+        counselor = {
+            'id': counselor_id,
+            'created_at': datetime.now(timezone.utc).isoformat(),
+            'status': 'pending',
+            **counselor_data
+        }
 
-    if 'counselors' not in signups:
-        signups['counselors'] = []
+        if 'counselors' not in signups:
+            signups['counselors'] = []
 
-    signups['counselors'].append(counselor)
-    self._write_json('collegeninja_signups.json', signups)
+        signups['counselors'].append(counselor)
+        self._write_json(self.collegeninja_signups_file, signups)
 
-    return counselor
+        return counselor
 
-def get_collegeninja_students(self, skip: int = 0, limit: int = 100) -> List[dict]:
-    """Get all CollegeNinja student signups"""
-    signups = self._read_json('collegeninja_signups.json')
+    def get_collegeninja_students(self, skip: int = 0, limit: int = 100) -> List[dict]:
+        """Get all CollegeNinja student signups"""
+        signups = self._read_json(self.collegeninja_signups_file)
 
-    students = signups.get('students', [])
-    # Sort by created_at descending
-    sorted_students = sorted(
-        students,
-        key=lambda x: x.get('created_at', ''),
-        reverse=True
-    )
+        students = signups.get('students', [])
+        # Sort by created_at descending
+        sorted_students = sorted(
+            students,
+            key=lambda x: x.get('created_at', ''),
+            reverse=True
+        )
 
-    return sorted_students[skip:skip + limit]
+        return sorted_students[skip:skip + limit]
 
-def get_collegeninja_counselors(self, skip: int = 0, limit: int = 100) -> List[dict]:
-    """Get all CollegeNinja counselor signups"""
-    signups = self._read_json('collegeninja_signups.json')
+    def get_collegeninja_counselors(self, skip: int = 0, limit: int = 100) -> List[dict]:
+        """Get all CollegeNinja counselor signups"""
+        signups = self._read_json(self.collegeninja_signups_file)
 
-    counselors = signups.get('counselors', [])
-    # Sort by created_at descending
-    sorted_counselors = sorted(
-        counselors,
-        key=lambda x: x.get('created_at', ''),
-        reverse=True
-    )
+        counselors = signups.get('counselors', [])
+        # Sort by created_at descending
+        sorted_counselors = sorted(
+            counselors,
+            key=lambda x: x.get('created_at', ''),
+            reverse=True
+        )
 
-    return sorted_counselors[skip:skip + limit]
+        return sorted_counselors[skip:skip + limit]
 
-def update_collegeninja_student(self, student_id: str, update_data: dict) -> Optional[dict]:
-    """Update CollegeNinja student status"""
-    signups = self._read_json('collegeninja_signups.json')
+    def update_collegeninja_student(self, student_id: str, update_data: dict) -> Optional[dict]:
+        """Update CollegeNinja student status"""
+        signups = self._read_json(self.collegeninja_signups_file)
 
-    students = signups.get('students', [])
-    for i, student in enumerate(students):
-        if student['id'] == student_id:
-            students[i].update(update_data)
-            students[i]['updated_at'] = datetime.now(timezone.utc).isoformat()
-            signups['students'] = students
-            self._write_json('collegeninja_signups.json', signups)
-            return students[i]
+        students = signups.get('students', [])
+        for i, student in enumerate(students):
+            if student['id'] == student_id:
+                students[i].update(update_data)
+                students[i]['updated_at'] = datetime.now(timezone.utc).isoformat()
+                signups['students'] = students
+                self._write_json(self.collegeninja_signups_file, signups)
+                return students[i]
 
-    return None
+        return None
 
-def update_collegeninja_counselor(self, counselor_id: str, update_data: dict) -> Optional[dict]:
-    """Update CollegeNinja counselor status"""
-    signups = self._read_json('collegeninja_signups.json')
+    def update_collegeninja_counselor(self, counselor_id: str, update_data: dict) -> Optional[dict]:
+        """Update CollegeNinja counselor status"""
+        signups = self._read_json(self.collegeninja_signups_file)
 
-    counselors = signups.get('counselors', [])
-    for i, counselor in enumerate(counselors):
-        if counselor['id'] == counselor_id:
-            counselors[i].update(update_data)
-            counselors[i]['updated_at'] = datetime.now(timezone.utc).isoformat()
-            signups['counselors'] = counselors
-            self._write_json('collegeninja_signups.json', signups)
-            return counselors[i]
+        counselors = signups.get('counselors', [])
+        for i, counselor in enumerate(counselors):
+            if counselor['id'] == counselor_id:
+                counselors[i].update(update_data)
+                counselors[i]['updated_at'] = datetime.now(timezone.utc).isoformat()
+                signups['counselors'] = counselors
+                self._write_json(self.collegeninja_signups_file, signups)
+                return counselors[i]
 
-    return None
+        return None
 
 # Global instance
 file_db = FileDB()
+# Initialize files on startup
+file_db.initialize_files()

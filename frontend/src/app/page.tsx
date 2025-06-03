@@ -86,8 +86,8 @@ export default function HomePage() {
   ];
 
   const stats = [
-    { number: '95%', label: 'College Acceptance Rate' },
-    { number: '1000+', label: 'Students Taught' },
+    { number: '95%', label: 'Admitted to Top-Tier STEM Schools' },
+    { number: '500', label: 'Students Taught' },
     { number: '50+', label: 'Research Papers' },
     { number: '4.9/5', label: 'Student Rating' }
   ];

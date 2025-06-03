@@ -87,7 +87,7 @@ export default function CollegeNinjaPage() {
   ];
 
   const stats = [
-    { number: '95%', label: 'College Acceptance Rate' },
+    { number: '95%', label: 'Admitted to Top-Tier STEM Schools' },
     { number: '500+', label: 'Students Guided' },
     { number: '50+', label: 'Top Universities' },
     { number: '$2M+', label: 'Scholarships Earned' }

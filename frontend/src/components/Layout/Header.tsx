@@ -86,9 +86,51 @@ export function Header() {
 
           <HStack spacing={8} alignItems={'center'}>
             <Link href="/">
-              <HStack cursor="pointer" _hover={{ opacity: 0.8 }} transition="opacity 0.2s">
-                <Text fontSize="2xl" fontWeight="bold" bgGradient="linear(to-r, blue.400, purple.600)" bgClip="text">
+              <HStack cursor="pointer" _hover={{ opacity: 0.8 }} transition="opacity 0.2s" spacing={3}>
+                {/* Logo SVG */}
+                <Box
+                  w={{ base: "32px", md: "40px" }}
+                  h={{ base: "32px", md: "40px" }}
+                  position="relative"
+                  flexShrink={0}
+                >
+                  <svg
+                    viewBox="0 0 400 400"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    style={{ width: '100%', height: '100%' }}
+                  >
+                    {/* Outer C shape */}
+                    <path
+                      d="M200 80C122.68 80 60 142.68 60 220C60 297.32 122.68 360 200 360C239.66 360 275.84 343.9 301.84 317.9"
+                      stroke="#3E3E5B"
+                      strokeWidth="60"
+                      strokeLinecap="round"
+                      fill="none"
+                    />
+
+                    {/* Inner bars */}
+                    <rect x="180" y="180" width="180" height="40" rx="8" fill="#5B7FFF" />
+                    <rect x="180" y="260" width="180" height="40" rx="8" fill="#5B7FFF" />
+                  </svg>
+                </Box>
+                <Text
+                  fontSize={{ base: "lg", md: "2xl" }}
+                  fontWeight="bold"
+                  bgGradient="linear(to-r, blue.400, purple.600)"
+                  bgClip="text"
+                  display={{ base: 'none', sm: 'block' }}
+                >
                   StemPro Academy
+                </Text>
+                <Text
+                  fontSize={{ base: "lg", md: "2xl" }}
+                  fontWeight="bold"
+                  bgGradient="linear(to-r, blue.400, purple.600)"
+                  bgClip="text"
+                  display={{ base: 'block', sm: 'none' }}
+                >
+                  StemPro
                 </Text>
               </HStack>
             </Link>
@@ -141,9 +183,30 @@ export function Header() {
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerHeader borderBottomWidth="1px">
-            <Text fontSize="xl" fontWeight="bold" bgGradient="linear(to-r, blue.400, purple.600)" bgClip="text">
-              StemPro Academy
-            </Text>
+            <HStack spacing={2}>
+              {/* Logo in drawer header */}
+              <Box w="24px" h="24px" flexShrink={0}>
+                <svg
+                  viewBox="0 0 400 400"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  style={{ width: '100%', height: '100%' }}
+                >
+                  <path
+                    d="M200 80C122.68 80 60 142.68 60 220C60 297.32 122.68 360 200 360C239.66 360 275.84 343.9 301.84 317.9"
+                    stroke="#3E3E5B"
+                    strokeWidth="60"
+                    strokeLinecap="round"
+                    fill="none"
+                  />
+                  <rect x="180" y="180" width="180" height="40" rx="8" fill="#5B7FFF" />
+                  <rect x="180" y="260" width="180" height="40" rx="8" fill="#5B7FFF" />
+                </svg>
+              </Box>
+              <Text fontSize="xl" fontWeight="bold" bgGradient="linear(to-r, blue.400, purple.600)" bgClip="text">
+                StemPro Academy
+              </Text>
+            </HStack>
           </DrawerHeader>
           <DrawerBody>
             <VStack spacing={4} align="stretch" mt={4}>
