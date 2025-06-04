@@ -88,8 +88,8 @@ export default function CollegeNinjaPage() {
 
   const stats = [
     { number: '95%', label: 'Admitted to Top-Tier STEM Schools' },
-    { number: '500+', label: 'Students Guided' },
-    { number: '50+', label: 'Top Universities' },
+    { number: '200+', label: 'Students Guided' },
+    { number: '50+', label: 'Students Published Papers' },
     { number: '$2M+', label: 'Scholarships Earned' }
   ];
 
@@ -485,7 +485,7 @@ export default function CollegeNinjaPage() {
               >
                 <VStack spacing={4}>
                   <Icon as={FiAward} boxSize={12} />
-                  <Text fontSize="lg" fontWeight="bold">Counselor Sign Up!</Text>
+                  <Text fontSize="lg" fontWeight="bold">Get in Touch with Our Platinum Partner!</Text>
                   <Text>Join as a partner</Text>
                 </VStack>
               </Card>

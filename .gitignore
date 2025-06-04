@@ -20,11 +20,13 @@ yarn-debug.log*
 yarn-error.log*
 
 # Environment variables
-.env
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.azure
+.env
+.env.production
+.env.development
+*.env
+!*.env.example
 
 # Data
 backend/data/*.json

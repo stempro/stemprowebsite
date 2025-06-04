@@ -1,27 +1,27 @@
-// frontend/src/components/Form/FormInput.tsx
+// frontend/src/components/Form/FormTextarea.tsx
 import {
   FormControl,
   FormLabel,
   FormErrorMessage,
-  Input,
-  InputProps,
+  Textarea,
+  TextareaProps,
   FormHelperText,
 } from '@chakra-ui/react';
 import { forwardRef } from 'react';
 
-interface FormInputProps extends InputProps {
+interface FormTextareaProps extends TextareaProps {
   label: string;
   error?: string;
   helperText?: string;
   isRequired?: boolean;
 }
 
-export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
+export const FormTextarea = forwardRef<HTMLTextAreaElement, FormTextareaProps>(
   ({ label, error, helperText, isRequired, ...props }, ref) => {
     return (
       <FormControl isInvalid={!!error} isRequired={isRequired}>
         <FormLabel>{label}</FormLabel>
-        <Input ref={ref} {...props} />
+        <Textarea ref={ref} {...props} />
         {helperText && !error && (
           <FormHelperText>{helperText}</FormHelperText>
         )}
@@ -31,4 +31,4 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
   }
 );
 
-FormInput.displayName = 'FormInput';
+FormTextarea.displayName = 'FormTextarea';

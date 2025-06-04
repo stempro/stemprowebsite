@@ -1,36 +1,33 @@
-# backend/requirements.txt
-fastapi==0.104.1
-uvicorn[standard]==0.24.0
-python-jose[cryptography]==3.3.0
+# FastAPI and Server
+fastapi==0.115.9
+uvicorn[standard]==0.34.1
+python-multipart==0.0.20
+
+# Authentication and Security
+python-jose[cryptography]==3.5.0
 passlib[bcrypt]==1.7.4
-python-multipart==0.0.6
-pydantic==2.5.0
-pydantic-settings==2.1.0
-httpx==0.25.2
+bcrypt==4.1.2
+
+# Email
 python-dotenv==1.0.0
+aiosmtplib==3.0.1
+email-validator==2.1.0
 
-# backend/Dockerfile
-FROM python:3.11-slim
+# Data Validation
+pydantic==2.5.0
+pydantic[email]
+pydantic-settings==2.1.0
 
-WORKDIR /app
+# CORS and HTTP
+httpx==0.25.1
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    gcc \
-    && rm -rf /var/lib/apt/lists/*
+# File handling
+aiofiles==23.2.1
 
-# Copy requirements and install Python dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Date/Time
+python-dateutil==2.8.2
 
-# Copy application code
-COPY . .
-
-# Create data directory
-RUN mkdir -p /app/data
-
-# Expose port
-EXPOSE 8000
-
-# Run the application
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Development/Testing (optional)
+pytest==7.4.3
+pytest-asyncio==0.21.1
+requests==2.31.0

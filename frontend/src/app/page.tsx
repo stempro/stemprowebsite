@@ -2,7 +2,7 @@
 
 import { Box, Container, Heading, Text, Button, Stack, SimpleGrid, Card, CardBody, CardHeader, VStack, HStack, Icon, useColorModeValue, Flex, Badge, Avatar, AvatarGroup } from '@chakra-ui/react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { FiCode, FiUsers, FiAward, FiBookOpen, FiTrendingUp, FiTarget, FiChevronRight, FiStar } from 'react-icons/fi';
+import { FiCode, FiUsers, FiAward, FiBookOpen, FiTrendingUp, FiTarget, FiChevronRight, FiStar, FiChevronDown } from 'react-icons/fi';
 import { useRouter } from 'next/navigation';
 import { Header } from '@/components/Layout/Header';
 import { Footer } from '@/components/Layout/Footer';
@@ -12,6 +12,7 @@ const MotionBox = motion(Box);
 const MotionCard = motion(Card);
 const MotionHeading = motion(Heading);
 const MotionText = motion(Text);
+const MotionIcon = motion(Icon);
 
 export default function HomePage() {
   const router = useRouter();
@@ -35,25 +36,25 @@ export default function HomePage() {
     {
       icon: FiCode,
       title: 'Project-Based Learning',
-      description: 'Build real projects that showcase your skills and creativity',
+      description: 'Build real projects that showcase your skills',
       color: 'blue'
     },
     {
       icon: FiUsers,
       title: 'Expert Mentorship',
-      description: 'Learn from industry professionals and experienced educators',
+      description: 'Learn from industry professionals',
       color: 'purple'
     },
     {
       icon: FiAward,
       title: 'Proven Success',
-      description: 'Students admitted to MIT, UC Berkeley, and other top universities',
+      description: 'Students admitted to top universities',
       color: 'green'
     },
     {
       icon: FiBookOpen,
       title: 'Comprehensive Programs',
-      description: 'From beginner to advanced, we have the right program for you',
+      description: 'From beginner to advanced levels',
       color: 'orange'
     }
   ];
@@ -64,7 +65,7 @@ export default function HomePage() {
       subtitle: 'Code-to-Campus',
       description: 'Master college applications with AI & programming skills',
       gradient: 'linear(135deg, #667eea 0%, #764ba2 100%)',
-      students: '500+',
+      students: '100+',
       rating: 4.9
     },
     {
@@ -72,24 +73,24 @@ export default function HomePage() {
       subtitle: 'Junior to Advanced',
       description: 'Learn AI from basics to building your own models',
       gradient: 'linear(135deg, #f093fb 0%, #f5576c 100%)',
-      students: '800+',
+      students: '500+',
       rating: 4.8
     },
     {
       title: 'Research Program',
       subtitle: 'Publication Ready',
-      description: 'Conduct research and get published in IEEE journals',
+      description: 'Conduct research and get published in top journals',
       gradient: 'linear(135deg, #4facfe 0%, #00f2fe 100%)',
-      students: '200+',
+      students: '50+',
       rating: 5.0
     }
   ];
 
   const stats = [
-    { number: '95%', label: 'Admitted to Top-Tier STEM Schools' },
-    { number: '500', label: 'Students Taught' },
-    { number: '50+', label: 'Research Papers' },
-    { number: '4.9/5', label: 'Student Rating' }
+    { number: '95%', label: 'Top-Tier Admissions', icon: FiAward },
+    { number: '500+', label: 'Students Taught', icon: FiUsers },
+    { number: '50+', label: 'Research Papers', icon: FiBookOpen },
+    { number: '4.9/5', label: 'Student Rating', icon: FiStar }
   ];
 
   if (!mounted) return null;
@@ -98,14 +99,15 @@ export default function HomePage() {
     <Box minH="100vh" display="flex" flexDirection="column">
       <Header />
 
-      {/* Hero Section with Parallax */}
+      {/* Hero Section - Reduced Height */}
       <Box
         position="relative"
         overflow="hidden"
         bgGradient={gradientBg}
-        minH="100vh"
+        minH={{ base: "85vh", md: "75vh" }}
         display="flex"
         alignItems="center"
+        pb={20} // Extra padding bottom for stats overlap
       >
         {/* Animated Background Elements */}
         <MotionBox
@@ -134,31 +136,29 @@ export default function HomePage() {
         />
 
         <Container maxW="container.xl" position="relative" zIndex={1}>
-          <VStack spacing={8} textAlign="center" py={20}>
+          <VStack spacing={6} textAlign="center" py={10}>
             <MotionHeading
               as="h1"
-              size="3xl"
+              size={{ base: "2xl", md: "3xl" }}
               fontWeight="bold"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
             >
               Empowering the Next Generation of
-              <br />
-              <Text as="span" color="blue.500">Innovators</Text>
+              <Text as="span" color="blue.500"> Innovators</Text>
             </MotionHeading>
 
             <MotionText
-              fontSize="xl"
+              fontSize={{ base: "lg", md: "xl" }}
               color="gray.600"
-              maxW="3xl"
+              maxW="2xl"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              StemPro Academy bridges students to tech careers through hands-on AI and programming education.
-              From Python basics to advanced AI, we prepare students for success in college admissions and beyond.
+              Bridge to tech careers through hands-on AI and programming education.
+              From Python basics to advanced AI.
             </MotionText>
 
             <MotionBox
@@ -191,37 +191,75 @@ export default function HomePage() {
                   }}
                   transition="all 0.2s"
                 >
-                  Schedule Consultation
+                  Free Consultation
                 </Button>
               </Stack>
             </MotionBox>
           </VStack>
         </Container>
+
+        {/* Scroll Indicator */}
+        <Box
+          position="absolute"
+          bottom="30px"
+          left="50%"
+          transform="translateX(-50%)"
+          cursor="pointer"
+          onClick={() => window.scrollTo({ top: window.innerHeight * 0.7, behavior: 'smooth' })}
+        >
+          <VStack spacing={2}>
+            <Text fontSize="sm" color="gray.600">Scroll to explore</Text>
+            <MotionIcon
+              as={FiChevronDown}
+              boxSize={6}
+              color="blue.500"
+              animate={{
+                y: [0, 10, 0],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+          </VStack>
+        </Box>
       </Box>
 
-      {/* Stats Section */}
-      <Box py={16} bg="blue.600" color="white">
+      {/* Floating Stats Cards - Overlapping Hero */}
+      <Box position="relative" mt={{ base: -16, md: -20 }} zIndex={2} px={4}>
         <Container maxW="container.xl">
-          <SimpleGrid columns={{ base: 2, md: 4 }} spacing={8}>
+          <SimpleGrid columns={{ base: 2, md: 4 }} spacing={{ base: 4, md: 6 }}>
             {stats.map((stat, index) => (
-              <MotionBox
+              <MotionCard
                 key={index}
-                textAlign="center"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.6 + index * 0.1 }}
+                bg={cardBg}
+                shadow="xl"
+                borderWidth="1px"
+                borderColor={borderColor}
+                _hover={{ transform: 'translateY(-5px)', shadow: '2xl' }}
+                style={{ transition: 'all 0.3s' }}
               >
-                <Text fontSize="4xl" fontWeight="bold">{stat.number}</Text>
-                <Text fontSize="lg" opacity={0.9}>{stat.label}</Text>
-              </MotionBox>
+                <CardBody textAlign="center" p={{ base: 4, md: 6 }}>
+                  <Icon as={stat.icon} boxSize={8} color="blue.500" mb={2} />
+                  <Text fontSize={{ base: "2xl", md: "3xl" }} fontWeight="bold" color="blue.600">
+                    {stat.number}
+                  </Text>
+                  <Text fontSize={{ base: "sm", md: "md" }} color="gray.600">
+                    {stat.label}
+                  </Text>
+                </CardBody>
+              </MotionCard>
             ))}
           </SimpleGrid>
         </Container>
       </Box>
 
-      {/* Features Section */}
-      <Box py={20} bg={useColorModeValue('gray.50', 'gray.900')}>
+      {/* Programs Section - Immediately Visible */}
+      <Box py={{ base: 16, md: 20 }} bg={useColorModeValue('white', 'gray.900')}>
         <Container maxW="container.xl">
           <VStack spacing={12}>
             <MotionBox
@@ -230,61 +268,10 @@ export default function HomePage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <Heading size="2xl" mb={4}>Why Choose StemPro Academy?</Heading>
+              <Badge colorScheme="blue" mb={4} fontSize="sm">Our Programs</Badge>
+              <Heading size="2xl" mb={4}>Transform Your Future</Heading>
               <Text fontSize="lg" color="gray.600">
-                Real-world, project-based learning that makes a difference
-              </Text>
-            </MotionBox>
-
-            <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={8} w="full">
-              {features.map((feature, index) => (
-                <MotionCard
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                  bg={cardBg}
-                  borderWidth="1px"
-                  borderColor={borderColor}
-                  shadow="md"
-                  _hover={{ shadow: 'xl' }}
-                >
-                  <CardBody textAlign="center" p={8}>
-                    <Flex justify="center" mb={4}>
-                      <Box
-                        p={3}
-                        bg={`${feature.color}.100`}
-                        borderRadius="full"
-                        color={`${feature.color}.600`}
-                      >
-                        <Icon as={feature.icon} boxSize={8} />
-                      </Box>
-                    </Flex>
-                    <Heading size="md" mb={3}>{feature.title}</Heading>
-                    <Text color="gray.600">{feature.description}</Text>
-                  </CardBody>
-                </MotionCard>
-              ))}
-            </SimpleGrid>
-          </VStack>
-        </Container>
-      </Box>
-
-      {/* Programs Section */}
-      <Box py={20}>
-        <Container maxW="container.xl">
-          <VStack spacing={12}>
-            <MotionBox
-              textAlign="center"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <Heading size="2xl" mb={4}>Featured Programs</Heading>
-              <Text fontSize="lg" color="gray.600">
-                Transform your future with our signature programs
+                Choose the program that matches your goals
               </Text>
             </MotionBox>
 
@@ -341,51 +328,71 @@ export default function HomePage() {
         </Container>
       </Box>
 
+      {/* Features Section - Condensed */}
+      <Box py={{ base: 16, md: 20 }} bg={useColorModeValue('gray.50', 'gray.800')}>
+        <Container maxW="container.xl">
+          <VStack spacing={12}>
+            <MotionBox
+              textAlign="center"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <Heading size="xl" mb={4}>Why Choose StemPro?</Heading>
+            </MotionBox>
+
+            <SimpleGrid columns={{ base: 2, md: 4 }} spacing={{ base: 4, md: 6 }} w="full">
+              {features.map((feature, index) => (
+                <MotionBox
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  textAlign="center"
+                >
+                  <Box
+                    p={3}
+                    bg={`${feature.color}.100`}
+                    borderRadius="full"
+                    color={`${feature.color}.600`}
+                    display="inline-flex"
+                    mb={3}
+                  >
+                    <Icon as={feature.icon} boxSize={6} />
+                  </Box>
+                  <Heading size="sm" mb={2}>{feature.title}</Heading>
+                  <Text fontSize="sm" color="gray.600">{feature.description}</Text>
+                </MotionBox>
+              ))}
+            </SimpleGrid>
+          </VStack>
+        </Container>
+      </Box>
+
       {/* CTA Section */}
       <Box
-        py={20}
+        py={{ base: 16, md: 20 }}
         bgGradient="linear(to-r, blue.400, purple.600)"
         color="white"
         position="relative"
         overflow="hidden"
       >
-        <MotionBox
-          position="absolute"
-          top="-50%"
-          right="-10%"
-          w="600px"
-          h="600px"
-          bg="whiteAlpha.200"
-          borderRadius="full"
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 1 }}
-        />
         <Container maxW="container.xl" position="relative">
           <VStack spacing={8} textAlign="center">
             <MotionHeading
-              size="2xl"
+              size="xl"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
               Ready to Start Your Journey?
             </MotionHeading>
-            <MotionText
-              fontSize="xl"
-              maxW="2xl"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-            >
-              Join our community and gain the skills you need for success
-            </MotionText>
             <MotionBox
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.4 }}
+              transition={{ delay: 0.2 }}
             >
               <Stack direction={{ base: 'column', sm: 'row' }} spacing={4}>
                 <Button

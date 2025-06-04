@@ -178,9 +178,14 @@ export function Header() {
       </Container>
 
       {/* Mobile Drawer */}
-      <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
-        <DrawerOverlay />
-        <DrawerContent>
+      <Drawer
+        isOpen={isOpen}
+        placement="left"
+        onClose={onClose}
+        size="xs"  // Smaller drawer width
+      >
+        <DrawerOverlay bg="blackAlpha.300" /> {/* Lighter overlay */}
+        <DrawerContent maxW="280px"> {/* Limit drawer width */}
           <DrawerCloseButton />
           <DrawerHeader borderBottomWidth="1px">
             <HStack spacing={2}>
@@ -203,8 +208,8 @@ export function Header() {
                   <rect x="180" y="260" width="180" height="40" rx="8" fill="#5B7FFF" />
                 </svg>
               </Box>
-              <Text fontSize="xl" fontWeight="bold" bgGradient="linear(to-r, blue.400, purple.600)" bgClip="text">
-                StemPro Academy
+              <Text fontSize="lg" fontWeight="bold" bgGradient="linear(to-r, blue.400, purple.600)" bgClip="text">
+                StemPro
               </Text>
             </HStack>
           </DrawerHeader>

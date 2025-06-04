@@ -191,7 +191,7 @@ Wrapper for API calls with loading and error states.
 
 ```tsx
 import { useApi } from '@/hooks/useApi';
-import { usersApi } from '@/services/api';
+import { usersApi } from '@/services/users';
 
 function UserList() {
   const { data: users, isLoading, error, execute } = useApi(usersApi.getAll);

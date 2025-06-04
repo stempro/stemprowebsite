@@ -1,8 +1,7 @@
 'use client';
-
 import { Box, Container, Heading, Text, VStack, Button, Stack, Icon, useColorModeValue, SimpleGrid, Card, CardBody, Progress, HStack } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import { FiClock, FiRocket, FiTarget, FiUsers, FiArrowLeft, FiBell } from 'react-icons/fi';
+import { FiZap, FiArrowLeft, FiBell, FiClock, FiSend, FiTarget, FiUsers } from 'react-icons/fi';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { Header } from '@/components/Layout/Header';
@@ -30,7 +29,7 @@ export default function CollegeNinjaPlatformPage() {
 
   const features = [
     {
-      icon: FiRocket,
+      icon: FiZap,
       title: 'AI-Powered Matching',
       description: 'Get personalized college recommendations based on your unique profile',
       color: 'purple'
@@ -169,7 +168,7 @@ export default function CollegeNinjaPlatformPage() {
                         transform: 'translateY(-2px)',
                         boxShadow: 'lg',
                       }}
-                      transition="all 0.2s"
+                      style={{ transition: 'all 0.2s' }}
                     >
                       Notify Me
                     </Button>
@@ -217,7 +216,7 @@ export default function CollegeNinjaPlatformPage() {
                   p={8}
                   textAlign="center"
                   _hover={{ transform: 'translateY(-5px)', shadow: 'xl' }}
-                  transition="all 0.3s"
+                  style={{ transition: 'all 0.3s' }}
                 >
                   <Icon
                     as={feature.icon}
@@ -274,7 +273,7 @@ export default function CollegeNinjaPlatformPage() {
                   transform: 'translateY(-2px)',
                   boxShadow: 'lg',
                 }}
-                transition="all 0.2s"
+                style={{ transition: 'all 0.2s' }}
               >
                 Back to CollegeNinja
               </Button>
@@ -286,7 +285,7 @@ export default function CollegeNinjaPlatformPage() {
                   transform: 'translateY(-2px)',
                   boxShadow: 'lg',
                 }}
-                transition="all 0.2s"
+                style={{ transition: 'all 0.2s' }}
               >
                 Explore Our Programs
               </Button>

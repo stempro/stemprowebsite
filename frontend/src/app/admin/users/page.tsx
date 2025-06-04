@@ -1,4 +1,4 @@
-// frontend/src/app/admin/users/page.tsx (REFACTORED VERSION)
+// frontend/src/app/admin/users/page.tsx (FIXED VERSION)
 'use client';
 
 import {
@@ -31,11 +31,11 @@ import { useToastNotification } from '@/hooks/useToastNotification';
 import { useAuth } from '@/hooks/useAuth';
 import { useConfirm } from '@/hooks/useConfirm';
 
-import { usersApi } from '@/services/api';
+import { usersApi } from '@/services/users';
 import { formatDate } from '@/lib/utils';
 import { User } from '@/types';
 
-export default function AdminUsersPageRefactored() {
+export default function AdminUsersPageFixed() {
   const router = useRouter();
   const { showSuccess, showError } = useToastNotification();
 
@@ -72,14 +72,14 @@ export default function AdminUsersPageRefactored() {
     const confirmed = await confirm();
     if (!confirmed) return;
 
-    const result = await deleteUser(selectedUser.id);
-    if (result) {
+    try {
+      await deleteUser(selectedUser.id);
       showSuccess({
         title: 'User deleted',
         description: `${selectedUser.name} has been removed`,
       });
       fetchUsers(); // Refresh the list
-    } else {
+    } catch (error) {
       showError({
         title: 'Error',
         description: 'Failed to delete user',
@@ -89,13 +89,15 @@ export default function AdminUsersPageRefactored() {
   };
 
   const handleToggleActive = async (userId: string) => {
-    const result = await toggleUserActive(userId);
-    if (result) {
-      showSuccess({
-        title: 'User status updated',
-      });
-      fetchUsers(); // Refresh the list
-    } else {
+    try {
+      const result = await toggleUserActive(userId);
+      if (result) {
+        showSuccess({
+          title: 'User status updated',
+        });
+        fetchUsers(); // Refresh the list
+      }
+    } catch (error) {
       showError({
         title: 'Error',
         description: 'Failed to update user status',
@@ -104,13 +106,15 @@ export default function AdminUsersPageRefactored() {
   };
 
   const handleMakeAdmin = async (userId: string) => {
-    const result = await makeUserAdmin(userId);
-    if (result) {
-      showSuccess({
-        title: 'User is now an admin',
-      });
-      fetchUsers(); // Refresh the list
-    } else {
+    try {
+      const result = await makeUserAdmin(userId);
+      if (result) {
+        showSuccess({
+          title: 'User is now an admin',
+        });
+        fetchUsers(); // Refresh the list
+      }
+    } catch (error) {
       showError({
         title: 'Error',
         description: 'Failed to make user admin',
@@ -250,116 +254,5 @@ export default function AdminUsersPageRefactored() {
         confirmText="Delete"
       />
     </Box>
-  );
-}
-
-// Example of using FormInput component in a form
-// frontend/src/app/admin/users/[id]/edit.tsx
-'use client';
-
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { Stack, Button, HStack } from '@chakra-ui/react';
-import { FormInput, FormSelect, FormTextarea } from '@/components/Form';
-import { Card } from '@/components/Layout/Card';
-import { useFormPersist } from '@/hooks/useFormPersist';
-
-const userEditSchema = z.object({
-  name: z.string().min(2, 'Name is required'),
-  role: z.enum(['student', 'parent', 'teacher', 'visitor']),
-  country: z.string(),
-  postal_code: z.string(),
-  comments: z.string().optional(),
-});
-
-type UserEditForm = z.infer<typeof userEditSchema>;
-
-export function UserEditForm({ user }: { user: User }) {
-  const form = useForm<UserEditForm>({
-    resolver: zodResolver(userEditSchema),
-    defaultValues: {
-      name: user.name,
-      role: user.role,
-      country: user.country,
-      postal_code: user.postal_code,
-      comments: user.comments || '',
-    },
-  });
-
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = form;
-
-  // Persist form data in case user navigates away
-  const { clearPersistedData } = useFormPersist({
-    form,
-    storageKey: `user-edit-${user.id}`,
-    exclude: [], // Don't exclude any fields
-  });
-
-  const onSubmit = async (data: UserEditForm) => {
-    // Submit logic here
-    clearPersistedData(); // Clear on successful submit
-  };
-
-  return (
-    <Card>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Stack spacing={4}>
-          <FormInput
-            label="Full Name"
-            error={errors.name?.message}
-            {...register('name')}
-          />
-
-          <FormSelect
-            label="Role"
-            error={errors.role?.message}
-            options={[
-              { value: 'student', label: 'Student' },
-              { value: 'parent', label: 'Parent' },
-              { value: 'teacher', label: 'Teacher' },
-              { value: 'visitor', label: 'Visitor' },
-            ]}
-            {...register('role')}
-          />
-
-          <FormSelect
-            label="Country"
-            error={errors.country?.message}
-            options={[
-              { value: 'USA', label: 'USA' },
-              { value: 'Canada', label: 'Canada' },
-              { value: 'Other', label: 'Other' },
-            ]}
-            {...register('country')}
-          />
-
-          <FormInput
-            label="Postal Code"
-            error={errors.postal_code?.message}
-            {...register('postal_code')}
-          />
-
-          <FormTextarea
-            label="Comments"
-            error={errors.comments?.message}
-            {...register('comments')}
-          />
-
-          <HStack spacing={4} pt={4}>
-            <Button
-              type="submit"
-              colorScheme="brand"
-              isLoading={isSubmitting}
-            >
-              Save Changes
-            </Button>
-            <Button variant="outline">
-              Cancel
-            </Button>
-          </HStack>
-        </Stack>
-      </form>
-    </Card>
   );
 }
