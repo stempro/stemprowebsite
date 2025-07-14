@@ -23,7 +23,7 @@ export default function CollegeNinjaPlatformPage() {
   );
 
   // Calculate days until launch (Q2 2025 - let's say June 1, 2025)
-  const launchDate = new Date('2025-07-15');
+  const launchDate = new Date('2025-07-31');
   const today = new Date();
   const daysUntilLaunch = Math.ceil((launchDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
 
